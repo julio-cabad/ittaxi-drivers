@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "427548532808",
+    "project_id": "instataxi-cf5d9",
+    "storage_bucket": "instataxi-cf5d9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427548532808:android:d4f4784a04979abb09f87d",
+        "android_client_info": {
+          "package_name": "com.instataxi_driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCA_T5RHoJehwvkxtoYxb0HidHRoAIyS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

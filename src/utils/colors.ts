@@ -1,0 +1,9 @@
+export const itPrimary = '#1c3a69';
+export const itSecondary = '#FF5F03';
+export const itGray = '#f3f4f6';
+export const itDarkGray = '#4b5563';
+export const itLightBlue = '#60a5fa';
+export const itRed = '#ef4444';
+export const itGreen = '#10b981';
+export const itYellow = '#f59e0b';
+export const itBg = '#f8fafc';
