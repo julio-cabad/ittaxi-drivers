@@ -22,16 +22,15 @@ const ReviewAndSubmitScreen = () => {
       
       const existingProgress = await getProgress();
       
-      // ✅ CORREGIDO: Solo auto-guardar si NO hay datos específicos de revisión
-      if (!existingProgress || !existingProgress.userData?.review) {
-        console.log('🎯 ReviewAndSubmitScreen: Registrando llegada al Step 5 (sin datos de revisión)');
+      if (!existingProgress || existingProgress.currentStep < 5) {
+        console.log('🎯 ReviewAndSubmitScreen: Registrando llegada al Step 5');
         const emptyReviewData = {
           reviewCompleted: false,
           submissionDate: null,
         };
         await saveProgress(5, emptyReviewData);
       } else {
-        console.log('🎯 ReviewAndSubmitScreen: Ya hay datos de revisión guardados, no sobrescribir');
+        console.log('🎯 ReviewAndSubmitScreen: Ya hay datos guardados, no sobrescribir');
       }
     };
 

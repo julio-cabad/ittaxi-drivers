@@ -8,8 +8,8 @@ export const SCREEN_NAMES = {
     REGISTER: 'RegisterScreen',
     PERSONAL_DATA: 'PersonalDataScreen',
     VEHICLE_DATA: 'VehicleDataScreen',
-    DOCUMENTS_UPLOAD: 'DocumentsUploadScreen',
     VEHICLE_PHOTOS: 'VehiclePhotosScreen',
+    DOCUMENTS_UPLOAD: 'DocumentsUploadScreen',
     REVIEW_SUBMIT: 'ReviewAndSubmitScreen',
     PENDING_REVIEW: 'PendingReviewScreen',
     DRIVER_STATUS: 'DriverStatusScreen',
@@ -18,7 +18,7 @@ export const SCREEN_NAMES = {
     HOME: 'Home',
     PROFILE: 'Profile',
     SETTINGS: 'Settings',
-  },
+  }
 } as const;
 
 // Type definitions for navigation parameters
@@ -32,8 +32,8 @@ export type OnboardingStackParamList = {
   [SCREEN_NAMES.ONBOARDING.REGISTER]: undefined;
   [SCREEN_NAMES.ONBOARDING.PERSONAL_DATA]: undefined;
   [SCREEN_NAMES.ONBOARDING.VEHICLE_DATA]: undefined;
-  [SCREEN_NAMES.ONBOARDING.DOCUMENTS_UPLOAD]: undefined;
   [SCREEN_NAMES.ONBOARDING.VEHICLE_PHOTOS]: undefined;
+  [SCREEN_NAMES.ONBOARDING.DOCUMENTS_UPLOAD]: undefined;
   [SCREEN_NAMES.ONBOARDING.REVIEW_SUBMIT]: undefined;
   [SCREEN_NAMES.ONBOARDING.PENDING_REVIEW]: undefined;
   [SCREEN_NAMES.ONBOARDING.DRIVER_STATUS]: undefined;
@@ -46,6 +46,4 @@ export type MainStackParamList = {
 };
 
 // Root navigation type
-export type RootStackParamList = AuthStackParamList &
-  OnboardingStackParamList &
-  MainStackParamList;
+export type RootStackParamList = AuthStackParamList & OnboardingStackParamList & MainStackParamList;

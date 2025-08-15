@@ -21,9 +21,8 @@ const DriverStatusScreen = () => {
       
       const existingProgress = await getProgress();
       
-      // ✅ CORREGIDO: Solo auto-guardar si NO hay datos específicos de status
-      if (!existingProgress || !existingProgress.userData?.status) {
-        console.log('🎯 DriverStatusScreen: Registrando llegada al Step 7 (sin datos de status)');
+      if (!existingProgress || existingProgress.currentStep < 7) {
+        console.log('🎯 DriverStatusScreen: Registrando llegada al Step 7');
         const emptyStatusData = {
           onboardingCompleted: true,
           driverStatus: 'active',
@@ -31,7 +30,7 @@ const DriverStatusScreen = () => {
         };
         await saveProgress(7, emptyStatusData);
       } else {
-        console.log('🎯 DriverStatusScreen: Ya hay datos de status guardados, no sobrescribir');
+        console.log('🎯 DriverStatusScreen: Ya hay datos guardados, no sobrescribir');
       }
     };
 

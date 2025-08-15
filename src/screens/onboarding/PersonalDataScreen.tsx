@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -15,8 +15,42 @@ import { SCREEN_NAMES } from '../../constants';
 
 const PersonalDataScreen = () => {
   const navigation = useNavigation<AuthNavigationProp>();
-  const { saveStepDataAndAdvance } = useOnboarding();
-  // ✅ ELIMINADO - No actualizar step automáticamente
+  const { saveProgress, updateCurrentStep, saveStepDataAndAdvance, getProgress, clearProgress, recoverProgress } = useOnboarding();
+  const [hasAutoSaved, setHasAutoSaved] = useState(false);
+
+  // 🎯 Registrar que llegamos al Step 1 SOLO si no hay datos previos
+  useEffect(() => {
+    const registerStepProgress = async () => {
+      if (hasAutoSaved) return;
+      setHasAutoSaved(true);
+
+      // Verificar si ya hay datos guardados
+      const existingProgress = await getProgress();
+
+      // Solo auto-guardar si NO hay datos previos o si currentStep es menor a 1
+      if (!existingProgress || existingProgress.currentStep < 1) {
+        console.log('🎯 PersonalDataScreen: Registrando llegada al Step 1 (sin datos previos)');
+        const emptyPersonalData = {
+          firstName: '',
+          lastName: '',
+          phoneNumber: '',
+          birthDate: '',
+          address: '',
+          city: '',
+          emergencyContact: {
+            name: '',
+            phoneNumber: '',
+            relationship: '',
+          },
+        };
+        await saveProgress(1, emptyPersonalData);
+      } else {
+        console.log('🎯 PersonalDataScreen: Ya hay datos guardados, no sobrescribir');
+      }
+    };
+
+    registerStepProgress();
+  }, [saveProgress, hasAutoSaved, getProgress]);
 
   // Manejar envío del formulario
   const handleFormSubmit = async (values: PersonalDataFormValues) => {

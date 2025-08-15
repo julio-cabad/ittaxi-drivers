@@ -22,9 +22,8 @@ const VehiclePhotosScreen = () => {
       
       const existingProgress = await getProgress();
       
-      // ✅ CORREGIDO: Solo auto-guardar si NO hay datos específicos de fotos
-      if (!existingProgress || !existingProgress.userData?.photos) {
-        console.log('🎯 VehiclePhotosScreen: Registrando llegada al Step 4 (sin datos de fotos)');
+      if (!existingProgress || existingProgress.currentStep < 4) {
+        console.log('🎯 VehiclePhotosScreen: Registrando llegada al Step 4');
         const emptyPhotosData = {
           frontPhoto: null,
           backPhoto: null,
@@ -34,7 +33,7 @@ const VehiclePhotosScreen = () => {
         };
         await saveProgress(4, emptyPhotosData);
       } else {
-        console.log('🎯 VehiclePhotosScreen: Ya hay datos de fotos guardados, no sobrescribir');
+        console.log('🎯 VehiclePhotosScreen: Ya hay datos guardados, no sobrescribir');
       }
     };
 

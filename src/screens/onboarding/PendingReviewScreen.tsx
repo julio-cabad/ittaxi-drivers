@@ -22,9 +22,8 @@ const PendingReviewScreen = () => {
       
       const existingProgress = await getProgress();
       
-      // ✅ CORREGIDO: Solo auto-guardar si NO hay datos específicos de pending
-      if (!existingProgress || !existingProgress.userData?.pending) {
-        console.log('🎯 PendingReviewScreen: Registrando llegada al Step 6 (sin datos de pending)');
+      if (!existingProgress || existingProgress.currentStep < 6) {
+        console.log('🎯 PendingReviewScreen: Registrando llegada al Step 6');
         const emptyPendingData = {
           submissionCompleted: true,
           reviewStatus: 'pending',
@@ -32,7 +31,7 @@ const PendingReviewScreen = () => {
         };
         await saveProgress(6, emptyPendingData);
       } else {
-        console.log('🎯 PendingReviewScreen: Ya hay datos de pending guardados, no sobrescribir');
+        console.log('🎯 PendingReviewScreen: Ya hay datos guardados, no sobrescribir');
       }
     };
 

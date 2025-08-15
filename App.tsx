@@ -15,9 +15,12 @@ function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        console.log('🔄 Inicializando Realm...');
         await realmService.initialize();
+        console.log('✅ Realm inicializado correctamente');
         setIsRealmInitialized(true);
       } catch (error) {
+        console.error('❌ Error inicializando Realm:', error);
         setInitError(error instanceof Error ? error.message : 'Error desconocido');
       }
     };

@@ -22,9 +22,8 @@ const DocumentsUploadScreen = () => {
       
       const existingProgress = await getProgress();
       
-      // ✅ CORREGIDO: Solo auto-guardar si NO hay datos específicos de documentos
-      if (!existingProgress || !existingProgress.userData?.documents) {
-        console.log('🎯 DocumentsUploadScreen: Registrando llegada al Step 3 (sin datos de documentos)');
+      if (!existingProgress || existingProgress.currentStep < 3) {
+        console.log('🎯 DocumentsUploadScreen: Registrando llegada al Step 3');
         const emptyDocumentsData = {
           driverLicense: null,
           vehicleRegistration: null,
@@ -33,7 +32,7 @@ const DocumentsUploadScreen = () => {
         };
         await saveProgress(3, emptyDocumentsData);
       } else {
-        console.log('🎯 DocumentsUploadScreen: Ya hay datos de documentos guardados, no sobrescribir');
+        console.log('🎯 DocumentsUploadScreen: Ya hay datos guardados, no sobrescribir');
       }
     };
 
