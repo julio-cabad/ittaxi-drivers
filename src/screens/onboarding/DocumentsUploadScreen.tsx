@@ -14,30 +14,7 @@ const DocumentsUploadScreen = () => {
   const { saveProgress, getProgress } = useOnboarding();
   const [hasAutoSaved, setHasAutoSaved] = useState(false);
 
-  // 🎯 Registrar que llegamos al Step 3 SOLO si no hay datos previos
-  useEffect(() => {
-    const registerStepProgress = async () => {
-      if (hasAutoSaved) return;
-      setHasAutoSaved(true);
-      
-      const existingProgress = await getProgress();
-      
-      if (!existingProgress || existingProgress.currentStep < 3) {
-        console.log('🎯 DocumentsUploadScreen: Registrando llegada al Step 3');
-        const emptyDocumentsData = {
-          driverLicense: null,
-          vehicleRegistration: null,
-          insurance: null,
-          criminalRecord: null,
-        };
-        await saveProgress(3, emptyDocumentsData);
-      } else {
-        console.log('🎯 DocumentsUploadScreen: Ya hay datos guardados, no sobrescribir');
-      }
-    };
-
-    registerStepProgress();
-  }, [saveProgress, hasAutoSaved, getProgress]);
+  // ✅ ELIMINADO - No auto-guardar datos vacíos
 
   const handleNext = () => {
     navigation.navigate(SCREEN_NAMES.ONBOARDING.REVIEW_SUBMIT);

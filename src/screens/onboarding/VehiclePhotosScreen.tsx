@@ -14,31 +14,7 @@ const VehiclePhotosScreen = () => {
   const { saveProgress, getProgress } = useOnboarding();
   const [hasAutoSaved, setHasAutoSaved] = useState(false);
 
-  // 🎯 Registrar que llegamos al Step 4 SOLO si no hay datos previos
-  useEffect(() => {
-    const registerStepProgress = async () => {
-      if (hasAutoSaved) return;
-      setHasAutoSaved(true);
-      
-      const existingProgress = await getProgress();
-      
-      if (!existingProgress || existingProgress.currentStep < 4) {
-        console.log('🎯 VehiclePhotosScreen: Registrando llegada al Step 4');
-        const emptyPhotosData = {
-          frontPhoto: null,
-          backPhoto: null,
-          leftSidePhoto: null,
-          rightSidePhoto: null,
-          interiorPhoto: null,
-        };
-        await saveProgress(4, emptyPhotosData);
-      } else {
-        console.log('🎯 VehiclePhotosScreen: Ya hay datos guardados, no sobrescribir');
-      }
-    };
-
-    registerStepProgress();
-  }, [saveProgress, hasAutoSaved, getProgress]);
+  // ✅ ELIMINADO - No auto-guardar datos vacíos
 
   const handleNext = () => {
     navigation.navigate(SCREEN_NAMES.ONBOARDING.DOCUMENTS_UPLOAD);

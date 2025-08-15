@@ -40,25 +40,30 @@ export interface PhotoFile {
   id: string;
   name: string;
   uri: string;
-  type: 'vehicle_front' | 'vehicle_back' | 'vehicle_interior' | 'profile_photo';
+  type:
+    | 'frontal'
+    | 'posterior'
+    | 'lateral_izquierda'
+    | 'lateral_derecha'
+    | 'interior';
   uploadUrl?: string;
   uploadStatus: 'pending' | 'uploading' | 'completed' | 'error';
   uploadProgress?: number;
 }
 
 export interface DocumentsData {
-  driverLicense: DocumentFile | null;
-  vehicleRegistration: DocumentFile | null;
-  insurance: DocumentFile | null;
-  nationalId: DocumentFile | null;
-  criminalRecord: DocumentFile | null;
+  cedulaFrontal: DocumentFile | null;
+  cedulaPosterior: DocumentFile | null;
+  licenciaConducir: DocumentFile | null;
+  matriculaVehiculo: DocumentFile | null;
 }
 
 export interface PhotosData {
-  vehicleFront: PhotoFile | null;
-  vehicleBack: PhotoFile | null;
-  vehicleInterior: PhotoFile | null;
-  profilePhoto: PhotoFile | null;
+  frontal: PhotoFile | null;
+  posterior: PhotoFile | null;
+  lateralIzquierda: PhotoFile | null;
+  lateralDerecha: PhotoFile | null;
+  interior: PhotoFile | null;
 }
 
 export interface OnboardingState {
@@ -68,7 +73,7 @@ export interface OnboardingState {
   isCompleted: boolean;
   progress: number; // 0-100%
   completedSteps?: number[]; // Array of completed step numbers
-  
+
   // User data
   userId: string | null;
   userData: {
@@ -77,23 +82,23 @@ export interface OnboardingState {
     documents: DocumentsData | null;
     photos: PhotosData | null;
   };
-  
+
   // Enhanced timestamp tracking
-  createdAt?: string;           // ISO string
-  lastSavedAt: string | null;   // ISO string
-  completedAt?: string;         // ISO string - NEW FIELD
-  submittedAt?: string;         // ISO string - NEW FIELD
+  createdAt?: string; // ISO string
+  lastSavedAt: string | null; // ISO string
+  completedAt?: string; // ISO string - NEW FIELD
+  submittedAt?: string; // ISO string - NEW FIELD
   syncStatus: 'synced' | 'pending' | 'error' | 'offline';
-  
+
   // Step completion tracking
   stepCompletionTimes?: {
     [stepNumber: number]: string; // ISO strings
   };
-  
+
   // UI state
   isLoading: boolean;
   error: string | null;
-  
+
   // Validation
   stepValidation: {
     [stepNumber: number]: boolean;
@@ -101,7 +106,13 @@ export interface OnboardingState {
 }
 
 export interface OnboardingStatus {
-  status: 'draft' | 'submitted' | 'under_review' | 'approved' | 'rejected' | 'requires_changes';
+  status:
+    | 'draft'
+    | 'submitted'
+    | 'under_review'
+    | 'approved'
+    | 'rejected'
+    | 'requires_changes';
   submittedAt?: string;
   reviewedAt?: string;
   rejectionReason?: string;
@@ -151,7 +162,8 @@ export const ONBOARDING_STEPS = {
   TOTAL: 8, // Total number of steps
 } as const;
 
-export type OnboardingStep = typeof ONBOARDING_STEPS[keyof typeof ONBOARDING_STEPS];
+export type OnboardingStep =
+  (typeof ONBOARDING_STEPS)[keyof typeof ONBOARDING_STEPS];
 
 // PASO 2: Tipo básico para recuperación de progreso
 export interface OnboardingProgress {
