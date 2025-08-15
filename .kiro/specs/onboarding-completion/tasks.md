@@ -8,14 +8,14 @@
   - _Requirements: 4.1, 4.2, 6.6_
 
 - [ ] 2. Create core image upload components and hooks
-  - [ ] 2.1 Implement useImagePicker hook with camera and gallery functionality
+  - [x] 2.1 Implement useImagePicker hook with camera and gallery functionality
     - Create hook with pickImage function supporting both camera and gallery
     - Implement permission request handling for camera and photo library
     - Add image compression functionality with configurable quality
     - Write unit tests for permission handling and image selection
     - _Requirements: 1.2, 2.2, 5.5_
 
-  - [ ] 2.2 Implement useImageUpload hook for Firebase Storage integration
+  - [x] 2.2 Implement useImageUpload hook for Firebase Storage integration
     - Create hook with uploadImage function and progress tracking
     - Implement retry logic with exponential backoff for failed uploads
     - Add error handling for different failure scenarios (network, quota, etc.)
@@ -23,7 +23,7 @@
     - Write unit tests for upload logic and error scenarios
     - _Requirements: 4.1, 4.3, 4.5, 4.6_
 
-  - [ ] 2.3 Create ImageUploadField component
+  - [x] 2.3 Create ImageUploadField component
     - Build reusable component with empty, loading, and completed states
     - Implement image preview with proper aspect ratio handling
     - Add upload progress indicator and error state display
@@ -32,14 +32,14 @@
     - _Requirements: 1.1, 1.3, 5.1, 5.6_
 
 - [ ] 3. Implement DocumentsUploadScreen functionality
-  - [ ] 3.1 Create document upload form with required fields
+  - [x] 3.1 Create document upload form with required fields
     - Implement form with cédula frontal, cédula posterior, licencia, and matrícula fields
     - Add form validation to ensure all required documents are uploaded
     - Integrate with useOnboarding hook for data persistence
     - Maintain consistent UI styling with existing onboarding screens
     - _Requirements: 1.1, 1.7, 5.1, 5.2_
 
-  - [ ] 3.2 Implement document upload workflow
+  - [x] 3.2 Implement document upload workflow
     - Connect ImageUploadField components to Firebase Storage paths
     - Handle upload completion and URL storage in Firestore
     - Implement proper error handling and retry mechanisms

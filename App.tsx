@@ -21,7 +21,9 @@ function App() {
         setIsRealmInitialized(true);
       } catch (error) {
         console.error('❌ Error inicializando Realm:', error);
-        setInitError(error instanceof Error ? error.message : 'Error desconocido');
+        setInitError(
+          error instanceof Error ? error.message : 'Error desconocido',
+        );
       }
     };
 

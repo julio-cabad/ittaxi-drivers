@@ -1,6 +1,7 @@
 /**
  * Image validation utilities for onboarding process
  */
+import { strings } from '../constants/strings';
 
 export interface ImageValidationResult {
   isValid: boolean;
@@ -38,7 +39,7 @@ const DEFAULT_OPTIONS: Required<ImageValidationOptions> = {
  */
 export const validateImage = async (
   imageUri: string,
-  options: ImageValidationOptions = {}
+  options: ImageValidationOptions = {},
 ): Promise<ImageValidationResult> => {
   const config = { ...DEFAULT_OPTIONS, ...options };
 
@@ -48,7 +49,7 @@ export const validateImage = async (
     if (!response.ok) {
       return {
         isValid: false,
-        error: 'No se pudo acceder al archivo de imagen',
+        error: strings.imageUpload.validation.fileNotFound,
         errorCode: ImageValidationError.FILE_NOT_FOUND,
       };
     }
@@ -60,7 +61,9 @@ export const validateImage = async (
       if (fileSize > config.maxSizeBytes) {
         return {
           isValid: false,
-          error: `El archivo es demasiado grande. Máximo permitido: ${formatFileSize(config.maxSizeBytes)}`,
+          error: `${strings.imageUpload.validation.fileTooLarge}. Máximo permitido: ${formatFileSize(
+            config.maxSizeBytes,
+          )}`,
           errorCode: ImageValidationError.FILE_TOO_LARGE,
         };
       }
@@ -71,7 +74,9 @@ export const validateImage = async (
     if (contentType && !config.allowedFormats.includes(contentType)) {
       return {
         isValid: false,
-        error: `Formato de archivo no válido. Formatos permitidos: ${config.allowedFormats.join(', ')}`,
+        error: `${strings.imageUpload.validation.invalidFormat}. Formatos permitidos: ${config.allowedFormats.join(
+          ', ',
+        )}`,
         errorCode: ImageValidationError.INVALID_FORMAT,
       };
     }
@@ -84,7 +89,7 @@ export const validateImage = async (
   } catch (error) {
     return {
       isValid: false,
-      error: 'Error al validar la imagen',
+      error: strings.imageUpload.errors.validating,
       errorCode: ImageValidationError.FILE_NOT_FOUND,
     };
   }
@@ -95,20 +100,20 @@ export const validateImage = async (
  */
 export const validateImageDimensions = (
   imageUri: string,
-  options: ImageValidationOptions = {}
+  options: ImageValidationOptions = {},
 ): Promise<ImageValidationResult> => {
   const config = { ...DEFAULT_OPTIONS, ...options };
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const Image = require('react-native').Image;
-    
+
     Image.getSize(
       imageUri,
       (width: number, height: number) => {
         if (width < config.minWidth || height < config.minHeight) {
           resolve({
             isValid: false,
-            error: `La imagen es demasiado pequeña. Mínimo: ${config.minWidth}x${config.minHeight}px`,
+            error: `${strings.imageUpload.validation.invalidDimensions}. Mínimo: ${config.minWidth}x${config.minHeight}px`,
             errorCode: ImageValidationError.INVALID_DIMENSIONS,
           });
           return;
@@ -117,7 +122,7 @@ export const validateImageDimensions = (
         if (width > config.maxWidth || height > config.maxHeight) {
           resolve({
             isValid: false,
-            error: `La imagen es demasiado grande. Máximo: ${config.maxWidth}x${config.maxHeight}px`,
+            error: `${strings.imageUpload.validation.invalidDimensions}. Máximo: ${config.maxWidth}x${config.maxHeight}px`,
             errorCode: ImageValidationError.INVALID_DIMENSIONS,
           });
           return;
@@ -127,13 +132,13 @@ export const validateImageDimensions = (
           isValid: true,
         });
       },
-      (error: any) => {
+      (_error: any) => {
         resolve({
           isValid: false,
-          error: 'No se pudieron obtener las dimensiones de la imagen',
+          error: strings.imageUpload.validation.invalidDimensions,
           errorCode: ImageValidationError.INVALID_FORMAT,
         });
-      }
+      },
     );
   });
 };
@@ -165,7 +170,7 @@ export const getFileExtension = (uri: string): string => {
 export const generateUniqueFileName = (
   userId: string,
   fileType: string,
-  extension: string = 'jpg'
+  extension: string = 'jpg',
 ): string => {
   const timestamp = Date.now();
   const randomId = Math.random().toString(36).substring(2, 15);
@@ -173,23 +178,23 @@ export const generateUniqueFileName = (
 };
 
 /**
- * Document types for onboarding
+ * Document types for onboarding - matches DocumentsData keys
  */
 export enum DocumentType {
-  CEDULA_FRONTAL = 'cedula-frontal',
-  CEDULA_POSTERIOR = 'cedula-posterior',
-  LICENCIA_CONDUCIR = 'licencia-conducir',
-  MATRICULA_VEHICULO = 'matricula-vehiculo',
+  NATIONAL_ID_FRONT = 'nationalIdFront',
+  NATIONAL_ID_BACK = 'nationalIdBack',
+  DRIVER_LICENSE = 'driverLicense',
+  VEHICLE_REGISTRATION = 'vehicleRegistration',
 }
 
 /**
- * Vehicle photo types for onboarding
+ * Vehicle photo types for onboarding - matches PhotosData keys
  */
 export enum VehiclePhotoType {
-  FRONTAL = 'frontal',
-  POSTERIOR = 'posterior',
-  LATERAL_IZQUIERDA = 'lateral-izq',
-  LATERAL_DERECHA = 'lateral-der',
+  FRONT = 'front',
+  BACK = 'back',
+  LEFT_SIDE = 'leftSide',
+  RIGHT_SIDE = 'rightSide',
   INTERIOR = 'interior',
 }
 
@@ -198,9 +203,12 @@ export enum VehiclePhotoType {
  */
 export const getDocumentStoragePath = (
   userId: string,
-  documentType: DocumentType
+  documentType: DocumentType,
 ): string => {
-  return `drivers/${userId}/documents/${generateUniqueFileName(userId, documentType)}`;
+  return `drivers/${userId}/documents/${generateUniqueFileName(
+    userId,
+    documentType,
+  )}`;
 };
 
 /**
@@ -208,7 +216,10 @@ export const getDocumentStoragePath = (
  */
 export const getVehiclePhotoStoragePath = (
   userId: string,
-  photoType: VehiclePhotoType
+  photoType: VehiclePhotoType,
 ): string => {
-  return `drivers/${userId}/vehicle-photos/${generateUniqueFileName(userId, photoType)}`;
+  return `drivers/${userId}/vehicle-photos/${generateUniqueFileName(
+    userId,
+    photoType,
+  )}`;
 };

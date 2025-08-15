@@ -4,6 +4,7 @@
 import storage from '@react-native-firebase/storage';
 import { DocumentType, VehiclePhotoType } from '../utils/imageValidation';
 
+
 export interface UploadProgress {
   bytesTransferred: number;
   totalBytes: number;
@@ -32,7 +33,7 @@ export class FirebaseStorageService {
   async uploadImage(
     imageUri: string,
     storagePath: string,
-    onProgress?: (progress: UploadProgress) => void
+    onProgress?: (progress: UploadProgress) => void,
   ): Promise<UploadResult> {
     try {
       const reference = storage().ref(storagePath);
@@ -40,11 +41,13 @@ export class FirebaseStorageService {
 
       // Set up progress listener
       if (onProgress) {
-        task.on('state_changed', (snapshot) => {
+        task.on('state_changed', snapshot => {
           const progress: UploadProgress = {
             bytesTransferred: snapshot.bytesTransferred,
             totalBytes: snapshot.totalBytes,
-            progress: Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100),
+            progress: Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+            ),
           };
           onProgress(progress);
         });
@@ -177,13 +180,13 @@ export const firebaseStorageService = FirebaseStorageService.getInstance();
 
 /**
  * Firebase Storage Security Rules (to be applied in Firebase Console)
- * 
+ *
  * rules_version = '2';
  * service firebase.storage {
  *   match /b/{bucket}/o {
  *     // Allow users to upload and read their own driver documents and photos
  *     match /drivers/{userId}/{allPaths=**} {
- *       allow read, write: if request.auth != null 
+ *       allow read, write: if request.auth != null
  *         && request.auth.uid == userId
  *         && resource.size < 5 * 1024 * 1024 // 5MB limit
  *         && resource.contentType.matches('image/.*'); // Only images

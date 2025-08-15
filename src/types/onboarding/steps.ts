@@ -1,0 +1,14 @@
+export const ONBOARDING_STEPS = {
+  REGISTER: 1,
+  PERSONAL_DATA: 2,
+  VEHICLE_DATA: 3,
+  VEHICLE_PHOTOS: 4,
+  DOCUMENTS_UPLOAD: 5,
+  REVIEW_SUBMIT: 6,
+  PENDING_REVIEW: 7,
+  DRIVER_STATUS: 8,
+  TOTAL: 8,
+} as const;
+
+export type OnboardingStep =
+  (typeof ONBOARDING_STEPS)[keyof typeof ONBOARDING_STEPS];

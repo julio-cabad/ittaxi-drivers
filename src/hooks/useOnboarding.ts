@@ -138,6 +138,10 @@ export const useOnboarding = () => {
         ].filter((v, i, a) => a.indexOf(v) === i),
         progress: Math.round((nextStep / ONBOARDING_STEPS.TOTAL) * 100),
         userData: {
+          personal: null,
+          vehicle: null,
+          documents: null,
+          photos: null,
           ...(await getProgress())?.userData,
           [getStepDataKey(dataStep)]: stepData, // Guardar en la sección correcta
         },

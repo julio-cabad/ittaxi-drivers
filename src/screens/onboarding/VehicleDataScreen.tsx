@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ScreenWrapper } from '../../components/layout';
 import { FormWrapper, VehicleDataFormContent } from '../../components/forms';
+import { OnboardingHeader } from '../../components/onboarding/OnboardingHeader';
 import { useOnboarding } from '../../hooks/useOnboarding';
 import { vehicleDataValidationSchema } from '../../utils/validations';
 import { VehicleData } from '../../types/onboarding';
@@ -60,16 +61,11 @@ const VehicleDataScreen = () => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <View style={onboardingStyles.headerSection}>
-          <View style={onboardingStyles.welcomeTextContainer}>
-            <Text style={onboardingStyles.welcomeTitle}>
-              Datos del Vehículo
-            </Text>
-            <Text style={onboardingStyles.welcomeSubtitle}>
-              Información del vehículo
-            </Text>
-          </View>
-        </View>
+        <OnboardingHeader
+          title="Datos del Vehículo"
+          subtitle="Información del vehículo"
+          variant="normal"
+        />
 
         <View style={onboardingStyles.formCard}>
           <View style={onboardingStyles.logoContainer}>

@@ -6,7 +6,7 @@ import { itPrimary } from '../../../utils/colors';
 import { getMaxBirthDate, getMinBirthDate } from '../../../utils/dateHelpers';
 import {
   PersonalDataFormContentProps,
-} from '../../../types/personalData';
+} from '../../../types/onboarding';
 import tw from 'twrnc';
 
 

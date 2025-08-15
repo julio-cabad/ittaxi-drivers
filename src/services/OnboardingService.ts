@@ -175,10 +175,11 @@ class OnboardingService {
     photoType: keyof PhotosData,
   ): PhotoFile['type'] {
     const mapping: Record<keyof PhotosData, PhotoFile['type']> = {
-      vehicleFront: 'vehicle_front',
-      vehicleBack: 'vehicle_back',
-      vehicleInterior: 'vehicle_interior',
-      profilePhoto: 'profile_photo',
+      front: 'frontal',
+      back: 'posterior',
+      leftSide: 'lateral_izquierda',
+      rightSide: 'lateral_derecha',
+      interior: 'interior',
     };
     return mapping[photoType];
   }
@@ -400,10 +401,10 @@ class OnboardingService {
 
     // Check required documents
     const requiredDocs: (keyof DocumentsData)[] = [
+      'nationalIdFront',
+      'nationalIdBack',
       'driverLicense',
       'vehicleRegistration',
-      'insurance',
-      'nationalId',
     ];
     for (const docType of requiredDocs) {
       if (!documents?.[docType]?.uploadUrl) {
@@ -414,10 +415,11 @@ class OnboardingService {
 
     // Check required photos
     const requiredPhotos: (keyof PhotosData)[] = [
-      'vehicleFront',
-      'vehicleBack',
-      'vehicleInterior',
-      'profilePhoto',
+      'front',
+      'back',
+      'leftSide',
+      'rightSide',
+      'interior',
     ];
     for (const photoType of requiredPhotos) {
       if (!photos?.[photoType]?.uploadUrl) {

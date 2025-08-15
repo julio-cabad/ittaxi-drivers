@@ -9,42 +9,40 @@ export const onboardingStyles = StyleSheet.create({
     backgroundColor: itPrimary,
   },
 
-  // Header Section - 20% de la pantalla
+  // Header Section - Legacy styles for screens not yet migrated
   headerSection: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     paddingHorizontal: 24,
     paddingTop: 60,
+    paddingBottom: 24,
+    minHeight: 160,
   },
 
-  // Welcome Text
+  // Welcome Text - Legacy styles
   welcomeTextContainer: {
-    alignSelf: 'stretch',
-    paddingLeft: 0,
+    flex: 1,
   },
   welcomeTitle: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 8,
+    marginBottom: 4,
     textAlign: 'left',
   },
   welcomeSubtitle: {
-    fontSize: 20,
+    fontSize: 18,
     color: 'rgba(255, 255, 255, 0.9)',
-    marginBottom: 40,
     textAlign: 'left',
+    lineHeight: 24,
   },
 
-  // Form Card - 80% de la pantalla
+  // Form Card - Ocupa el resto del espacio disponible
   formCard: {
-    flex: 4, // Cambiado de 3 a 4 para que sea 80%
+    flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     paddingHorizontal: 24,
-    paddingTop: 2,
+    paddingTop: 24, // Aumentado de 2 a 24 para mejor espaciado
     paddingBottom: 20,
     shadowColor: '#000',
     shadowOffset: {

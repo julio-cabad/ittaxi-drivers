@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { StatusBar, Platform, View } from 'react-native';
+import tw from 'twrnc';
 
 export interface StatusBarConfig {
   barStyle: 'light-content' | 'dark-content' | 'default';
@@ -40,15 +41,10 @@ const StatusBarManager: React.FC<StatusBarManagerProps> = ({
       />
       {Platform.OS === 'ios' && backgroundColor && backgroundColor !== 'transparent' && (
         <View 
-          style={{ 
-            height: 44, // iOS status bar height
-            backgroundColor: backgroundColor,
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1000,
-          }} 
+          style={[
+            tw`h-11 absolute top-0 left-0 right-0 z-50`,
+            { backgroundColor: backgroundColor }
+          ]} 
         />
       )}
       {children}

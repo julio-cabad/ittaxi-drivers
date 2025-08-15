@@ -1,6 +1,13 @@
-import { Alert } from 'react-native';
-import { launchCamera, launchImageLibrary, ImagePickerResponse, CameraOptions, ImageLibraryOptions } from 'react-native-image-picker';
-import DocumentPicker, { DocumentPickerResponse } from '@react-native-documents/picker';
+import {
+  launchCamera,
+  launchImageLibrary,
+  ImagePickerResponse,
+  CameraOptions,
+  ImageLibraryOptions,
+} from 'react-native-image-picker';
+import DocumentPicker from '@react-native-documents/picker';
+import { errorInterceptor } from '../interceptors/errorInterceptor';
+import { strings } from '../constants/strings';
 
 // Opciones para la cámara y la galería
 const cameraOptions: CameraOptions = {
@@ -19,20 +26,37 @@ const libraryOptions: ImageLibraryOptions = {
  * Encapsula la lógica de react-native-image-picker y @react-native-documents/picker.
  */
 export const useDocumentPicker = () => {
-
-  const handleResponse = (response: ImagePickerResponse): string | null => {
+  const handleResponse = (
+    response: ImagePickerResponse,
+    operation: string,
+  ): string | null => {
     if (response.didCancel) {
-      console.log('User cancelled image picker');
+      // User cancellation is not an error, just return null silently
       return null;
     }
+
     if (response.errorCode) {
-      console.error('ImagePicker Error: ', response.errorMessage);
-      Alert.alert('Error', 'Ocurrió un error al seleccionar la imagen.');
+      const error = new Error(
+        response.errorMessage || 'Error al seleccionar imagen',
+      );
+      error.name = 'ImagePickerError';
+      (error as any).code = response.errorCode;
+
+      errorInterceptor.handleError(error, {
+        operation,
+        additionalInfo: { errorCode: response.errorCode },
+      });
       return null;
     }
-    if (response.assets && response.assets.length > 0 && response.assets[0].uri) {
+
+    if (
+      response.assets &&
+      response.assets.length > 0 &&
+      response.assets[0].uri
+    ) {
       return response.assets[0].uri;
     }
+
     return null;
   };
 
@@ -41,8 +65,16 @@ export const useDocumentPicker = () => {
    * @returns La URI de la imagen tomada o null si se cancela.
    */
   const pickImageFromCamera = async (): Promise<string | null> => {
-    const response = await launchCamera(cameraOptions);
-    return handleResponse(response);
+    try {
+      const response = await launchCamera(cameraOptions);
+      return handleResponse(response, 'pickImageFromCamera');
+    } catch (error) {
+      errorInterceptor.handleError(error, {
+        operation: 'pickImageFromCamera',
+        additionalInfo: { cameraOptions },
+      });
+      return null;
+    }
   };
 
   /**
@@ -50,8 +82,16 @@ export const useDocumentPicker = () => {
    * @returns La URI de la imagen seleccionada o null si se cancela.
    */
   const pickImageFromGallery = async (): Promise<string | null> => {
-    const response = await launchImageLibrary(libraryOptions);
-    return handleResponse(response);
+    try {
+      const response = await launchImageLibrary(libraryOptions);
+      return handleResponse(response, 'pickImageFromGallery');
+    } catch (error) {
+      errorInterceptor.handleError(error, {
+        operation: 'pickImageFromGallery',
+        additionalInfo: { libraryOptions },
+      });
+      return null;
+    }
   };
 
   /**
@@ -61,22 +101,52 @@ export const useDocumentPicker = () => {
   const pickDocument = async (): Promise<string | null> => {
     try {
       const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
-        allowMultiSelection: false, // Asegura que solo se pueda seleccionar un archivo
+        type: ['image/*', 'application/pdf'],
       });
-      // La respuesta es un array, incluso si es un solo archivo
-      if (result && result.length > 0) {
-        return result[0].uri;
+
+      // pick devuelve un objeto directamente
+      if (result && result.uri) {
+        return result.uri;
       }
+
+      // No file selected
+      const noFileError = new Error(strings.documentPicker.errors.noFileSelected);
+      noFileError.name = 'DocumentPickerError';
+      (noFileError as any).code = 'document-picker/no-file-selected';
+
+      errorInterceptor.handleError(noFileError, {
+        operation: 'pickDocument',
+        additionalInfo: { result },
+      });
+
       return null;
-    } catch (err: any) {
-      // El manejo de errores de cancelación se hace a través del código de error
-      if (err.code === 'DOCUMENT_PICKER_CANCELED') {
-        console.log('User cancelled document picker');
-      } else {
-        console.error('DocumentPicker Error: ', err);
-        Alert.alert('Error', 'Ocurrió un error al seleccionar el documento.');
+    } catch (error: any) {
+      // Handle user cancellation
+      if (DocumentPicker.isCancel(error)) {
+        const cancelError = new Error(strings.documentPicker.errors.cancelled);
+        cancelError.name = 'DocumentPickerError';
+        (cancelError as any).code = 'document-picker/cancelled';
+
+        errorInterceptor.handleError(cancelError, {
+          operation: 'pickDocument',
+          additionalInfo: { cancelled: true },
+        });
+
+        return null;
       }
+
+      // Handle other errors
+      const documentError = new Error(
+        error.message || strings.documentPicker.errors.unknown,
+      );
+      documentError.name = 'DocumentPickerError';
+      (documentError as any).code = 'document-picker/unknown';
+
+      errorInterceptor.handleError(documentError, {
+        operation: 'pickDocument',
+        additionalInfo: { originalError: error },
+      });
+
       return null;
     }
   };

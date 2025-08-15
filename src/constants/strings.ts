@@ -43,7 +43,7 @@ export const strings = {
       successMessage: '¡Enlace de recuperación enviado a tu correo!',
     },
   },
-  
+
   // Validation Messages
   validation: {
     required: 'Este campo es obligatorio',
@@ -54,7 +54,8 @@ export const strings = {
     password: {
       required: 'La contraseña es obligatoria',
       minLength: 'La contraseña debe tener al menos 8 caracteres',
-      pattern: 'La contraseña debe contener al menos una mayúscula, una minúscula y un número',
+      pattern:
+        'La contraseña debe contener al menos una mayúscula, una minúscula y un número',
       match: 'Las contraseñas deben coincidir',
     },
     name: {
@@ -68,7 +69,76 @@ export const strings = {
       minLength: 'El número de teléfono debe tener al menos 10 dígitos',
     },
   },
-  
+
+  // Document Picker
+  documentPicker: {
+    errors: {
+      noFileSelected: 'No se seleccionó ningún archivo',
+      cancelled: 'Selección cancelada por el usuario',
+      cancelledToast: 'Selección de documento cancelada',
+      unknown: 'Error al seleccionar documento',
+      permissionDenied: 'Sin permisos para acceder a los archivos',
+      invalidType: 'Tipo de archivo no soportado',
+      fileTooLarge: 'El archivo es demasiado grande',
+    },
+  },
+
+  // Image Picker
+  imagePicker: {
+    errors: {
+      unknown: 'Error al seleccionar imagen',
+      noImageSelected: 'No se seleccionó ninguna imagen',
+      permissionDenied: 'Sin permisos para acceder a la cámara o galería',
+      cancelled: 'Selección de imagen cancelada',
+    },
+  },
+
+  // Image Upload
+  imageUpload: {
+    permissions: {
+      camera: 'Permiso de Cámara',
+      cameraMessage:
+        'Esta aplicación necesita acceso a la cámara para tomar fotos de documentos.',
+      storage: 'Permiso de Almacenamiento',
+      storageMessage:
+        'Esta aplicación necesita acceso al almacenamiento para seleccionar fotos.',
+      buttonNeutral: 'Preguntar Después',
+      buttonNegative: 'Cancelar',
+      buttonPositive: 'Permitir',
+    },
+    picker: {
+      title: 'Seleccionar Imagen',
+      message: 'Elige una opción para agregar la imagen',
+      camera: 'Cámara',
+      gallery: 'Galería',
+      cancel: 'Cancelar',
+    },
+    errors: {
+      permissionsDenied: 'Permisos requeridos no otorgados',
+      requestingPermissions: 'Error al solicitar permisos',
+      compressing: 'Error al comprimir la imagen',
+      validating: 'Error al validar la imagen',
+      processing: 'Error al procesar la imagen',
+      opening: 'Error al abrir el selector de imágenes',
+      noImageSelected: 'No se seleccionó ninguna imagen',
+      invalidUri: 'URI de imagen inválida',
+      invalidImage: 'Imagen inválida',
+      uploadFailed: 'Error desconocido al subir la imagen',
+      uploadCancelled: 'Subida cancelada',
+    },
+    progress: {
+      processing: 'Procesando...',
+      uploading: 'Subiendo...',
+      completed: 'Completado',
+    },
+    validation: {
+      fileTooLarge: 'El archivo es demasiado grande',
+      invalidFormat: 'Formato de archivo no válido',
+      fileNotFound: 'No se pudo acceder al archivo de imagen',
+      invalidDimensions: 'Las dimensiones de la imagen no son válidas',
+    },
+  },
+
   // Common
   common: {
     loading: 'Cargando...',

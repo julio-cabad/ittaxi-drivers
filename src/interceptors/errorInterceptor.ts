@@ -4,6 +4,7 @@ import {
   showWarningToast,
   NetworkToasts,
 } from '../utils/toastUtils';
+import { strings } from '../constants/strings';
 
 export interface ErrorContext {
   operation: string;
@@ -73,6 +74,24 @@ class ErrorInterceptor {
     'connection-lost': 'Se perdió la conexión a internet',
     'dns-error': 'Error de resolución de DNS',
     'ssl-error': 'Error de certificado SSL',
+  };
+
+  // Document picker error handling
+  private readonly DOCUMENT_PICKER_ERROR_MESSAGES: Record<string, string> = {
+    'document-picker/cancelled': strings.documentPicker.errors.cancelledToast,
+    'document-picker/permission-denied': strings.documentPicker.errors.permissionDenied,
+    'document-picker/unknown': strings.documentPicker.errors.unknown,
+    'document-picker/invalid-type': strings.documentPicker.errors.invalidType,
+    'document-picker/file-too-large': strings.documentPicker.errors.fileTooLarge,
+    'document-picker/no-file-selected': strings.documentPicker.errors.noFileSelected,
+  };
+
+  // Image picker error handling
+  private readonly IMAGE_PICKER_ERROR_MESSAGES: Record<string, string> = {
+    'image-picker/cancelled': strings.imagePicker.errors.cancelled,
+    'image-picker/permission-denied': strings.imagePicker.errors.permissionDenied,
+    'image-picker/unknown': strings.imagePicker.errors.unknown,
+    'image-picker/no-image-selected': strings.imagePicker.errors.noImageSelected,
   };
 
   // Storage error handling
@@ -166,6 +185,16 @@ class ErrorInterceptor {
       return this.NETWORK_ERROR_MESSAGES[errorCode];
     }
 
+    // Check document picker errors
+    if (this.DOCUMENT_PICKER_ERROR_MESSAGES[errorCode]) {
+      return this.DOCUMENT_PICKER_ERROR_MESSAGES[errorCode];
+    }
+
+    // Check image picker errors
+    if (this.IMAGE_PICKER_ERROR_MESSAGES[errorCode]) {
+      return this.IMAGE_PICKER_ERROR_MESSAGES[errorCode];
+    }
+
     // Check storage errors
     const storageKey = `storage/${errorCode}`;
     if (this.STORAGE_ERROR_MESSAGES[storageKey]) {
@@ -202,6 +231,26 @@ class ErrorInterceptor {
     // Permission errors
     if (errorCode === 'permission-denied' || errorCode === 'unauthenticated') {
       showErrorToast('Sin permisos', errorMessage);
+      return;
+    }
+
+    // Document picker errors
+    if (errorCode.startsWith('document-picker/')) {
+      if (errorCode === 'document-picker/cancelled') {
+        // Don't show toast for user cancellation
+        return;
+      }
+      showErrorToast('Error de selección', errorMessage);
+      return;
+    }
+
+    // Image picker errors
+    if (errorCode.startsWith('image-picker/')) {
+      if (errorCode === 'image-picker/cancelled') {
+        // Don't show toast for user cancellation
+        return;
+      }
+      showErrorToast('Error de imagen', errorMessage);
       return;
     }
 
@@ -299,7 +348,7 @@ class ErrorInterceptor {
         }
 
         // Wait before retrying
-        await new Promise(resolve => setTimeout(resolve, delay * attempt));
+        await new Promise<void>(resolve => setTimeout(() => resolve(), delay * attempt));
         console.log(
           `Retrying ${context.operation}, attempt ${attempt + 1}/${maxRetries}`,
         );
