@@ -35,16 +35,16 @@ export const onboardingStyles = StyleSheet.create({
     lineHeight: 24,
   },
 
-  // Form Card - Diseño moderno mejorado
+  // Form Card - SUPER VISIBLE MODERN DESIGN
   formCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     paddingHorizontal: 24,
-    paddingTop: 32, // Más espaciado superior
+    paddingTop: 40, // More top padding
     paddingBottom: 20,
-    // Enhanced shadow system
+    // DRAMATIC shadow system
     shadowColor: '#667eea',
     shadowOffset: {
       width: 0,
@@ -83,10 +83,10 @@ export const onboardingStyles = StyleSheet.create({
     lineHeight: 24,
   },
 
-  // Footer Links (para Register/Login)
+  // Footer Links (para Register/Login) - Fixed positioning
   footerLinks: {
-    marginTop: 'auto',
     paddingTop: 20,
+    paddingBottom: 10,
     alignItems: 'center',
   },
   loginContainer: {

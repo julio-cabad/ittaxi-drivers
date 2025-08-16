@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  Image, 
+  ActivityIndicator, 
+  KeyboardAvoidingView, 
+  ScrollView, 
+  Platform 
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '../../navigation/AuthNavigator';
@@ -71,81 +80,93 @@ const Login = () => {
 
   return (
     <ScreenWrapper>
-      {/* Enhanced Background Gradient */}
-      <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
-        style={onboardingStyles.gradientBackground}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
+      <KeyboardAvoidingView 
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        {/* Header Section */}
-        <View style={onboardingStyles.headerSection}>
-          <View style={onboardingStyles.welcomeTextContainer}>
-            <Text style={onboardingStyles.welcomeTitle}>
-              {strings.auth.login.title}
-            </Text>
-          </View>
-        </View>
-
-        {/* Form Card - 80% of screen */}
-        <View style={onboardingStyles.formCard}>
-          {/* Logo inside white card */}
-          <View style={onboardingStyles.logoContainer}>
-            <Image
-              source={require('../../assets/logo.png')}
-              style={onboardingStyles.logo}
-              resizeMode="contain"
-            />
-          </View>
-          <FormWrapper
-            initialValues={InitialValues.login}
-            validationSchema={AuthSchemas.login}
-            onSubmit={handleLogin}
-            scrollEnabled={false}
+        {/* Enhanced Background Gradient */}
+        <LinearGradient
+          colors={['#667eea', '#764ba2', '#f093fb']}
+          style={onboardingStyles.gradientBackground}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <ScrollView 
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
           >
-            {formik => (
-              <View>
-                <LoginFormContent
-                  formik={formik}
-                  onSubmit={handleLogin}
-                  loading={isLoggingIn}
-                />
- 
-                {/* Forgot Password - Inside form, after button */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(SCREEN_NAMES.AUTH.FORGOT_PASSWORD)
-                  }
-                  style={onboardingStyles.forgotPasswordButton}
-                >
-                  <Text style={onboardingStyles.forgotPasswordText}>
-                    {strings.auth.login.forgotPassword}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </FormWrapper>
-
-          {/* Footer Links - Only Register Link */}
-          <View style={onboardingStyles.footerLinks}>
-            <View style={onboardingStyles.loginContainer}>
-              <Text style={onboardingStyles.alreadyAccountText}>
-                {strings.auth.login.noAccount}
-              </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(SCREEN_NAMES.ONBOARDING.REGISTER)
-                }
-              >
-                <Text style={onboardingStyles.loginText}>
-                  {strings.auth.login.signUp}
+            {/* Header Section */}
+            <View style={onboardingStyles.headerSection}>
+              <View style={onboardingStyles.welcomeTextContainer}>
+                <Text style={onboardingStyles.welcomeTitle}>
+                  {strings.auth.login.title}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          {/* Error Display removido - errorInterceptor maneja los errores automáticamente */}
-        </View>
-      </LinearGradient>
+
+            {/* Form Card - 80% of screen */}
+            <View style={[onboardingStyles.formCard, { minHeight: 500 }]}>
+              {/* Logo inside white card */}
+              <View style={onboardingStyles.logoContainer}>
+                <Image
+                  source={require('../../assets/logo.png')}
+                  style={onboardingStyles.logo}
+                  resizeMode="contain"
+                />
+              </View>
+              
+              <FormWrapper
+                initialValues={InitialValues.login}
+                validationSchema={AuthSchemas.login}
+                onSubmit={handleLogin}
+                scrollEnabled={false}
+              >
+                {formik => (
+                  <View style={{ flex: 1 }}>
+                    <LoginFormContent
+                      formik={formik}
+                      onSubmit={handleLogin}
+                      loading={isLoggingIn}
+                    />
+     
+                    {/* Forgot Password - Inside form, after button */}
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate(SCREEN_NAMES.AUTH.FORGOT_PASSWORD)
+                      }
+                      style={onboardingStyles.forgotPasswordButton}
+                    >
+                      <Text style={onboardingStyles.forgotPasswordText}>
+                        {strings.auth.login.forgotPassword}
+                      </Text>
+                    </TouchableOpacity>
+
+                    {/* Footer Links - Only Register Link */}
+                    <View style={[onboardingStyles.footerLinks, { marginTop: 'auto', paddingTop: 20 }]}>
+                      <View style={onboardingStyles.loginContainer}>
+                        <Text style={onboardingStyles.alreadyAccountText}>
+                          {strings.auth.login.noAccount}
+                        </Text>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate(SCREEN_NAMES.ONBOARDING.REGISTER)
+                          }
+                        >
+                          <Text style={onboardingStyles.loginText}>
+                            {strings.auth.login.signUp}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </FormWrapper>
+            </View>
+          </ScrollView>
+        </LinearGradient>
+      </KeyboardAvoidingView>
     </ScreenWrapper>
   );
 };

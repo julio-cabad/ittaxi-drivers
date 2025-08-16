@@ -13,3 +13,9 @@ export {
   type AnimationType,
   type GlowVariant,
 } from './AnimatedLogo';
+
+export {
+  default as ModernInput,
+  type InputVariant,
+  type InputSize,
+} from './ModernInput';

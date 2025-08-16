@@ -26,7 +26,7 @@
   - Write tests for logo animation states
   - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-- [-] 4. Create ModernInput component system for app-wide use
+- [ ] 4. Create ModernInput component system for app-wide use
 
   - Implement floating label animation that moves up on focus
   - Add focus animation with border color transition and scale effect
