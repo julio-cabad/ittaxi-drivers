@@ -1,32 +1,38 @@
 import React, { useState } from 'react';
-import { TextInput, Text, View, TouchableOpacity, ViewStyle, TextStyle, KeyboardTypeOptions } from 'react-native';
+import {
+  TextInput,
+  Text,
+  View,
+  TouchableOpacity,
+  ViewStyle,
+  KeyboardTypeOptions,
+  StyleProp,
+  TextStyle,
+  // Removed NativeSyntheticEvent and TextInputFocusEventData as they are deprecated/not needed
+} from 'react-native';
 import { useField } from 'formik';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import tw from 'twrnc';
+import { inputStyles } from '../../styles';
 
-export type InputVariant = 'default' | 'filled' | 'outlined';
-export type InputSize = 'small' | 'medium' | 'large';
+// Import FocusEvent and BlurEvent directly
+import { FocusEvent, BlurEvent } from 'react-native';
 
 interface InputProps {
   name: string;
   label?: string;
   placeholder?: string;
   secureTextEntry?: boolean;
-  variant?: InputVariant;
-  size?: InputSize;
   disabled?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  style?: ViewStyle;
-  inputStyle?: TextStyle;
-  labelStyle?: TextStyle;
-  errorStyle?: TextStyle;
+  containerStyle?: ViewStyle;
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-  autoComplete?: 'off' | 'username' | 'password' | 'email' | 'name' | 'tel' | 'street-address' | 'postal-code' | 'cc-number' | 'cc-csc' | 'cc-exp' | 'cc-exp-month' | 'cc-exp-year';
+  autoComplete?: 'off' | 'username' | 'password' | 'email' | 'name';
   testID?: string;
-  onFocus?: () => void;
-  onBlur?: () => void;
+  // Updated types for onFocus and onBlur to use FocusEvent and BlurEvent
+  onFocus?: (e: FocusEvent) => void;
+  onBlur?: (e: BlurEvent) => void;
   maxLength?: number;
 }
 
@@ -35,15 +41,10 @@ const Input: React.FC<InputProps> = ({
   label,
   placeholder,
   secureTextEntry = false,
-  variant = 'default',
-  size = 'medium',
   disabled = false,
   leftIcon,
   rightIcon,
-  style,
-  inputStyle,
-  labelStyle,
-  errorStyle,
+  containerStyle,
   keyboardType = 'default',
   autoCapitalize = 'none',
   autoComplete,
@@ -51,75 +52,22 @@ const Input: React.FC<InputProps> = ({
   onFocus,
   onBlur,
   maxLength,
-  ...props
 }) => {
   const [field, meta, helpers] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const getVariantStyles = () => {
-    // Para confirmPassword, mostrar error inmediatamente si hay error
-    // Para otros campos, esperar a que sea touched
-    const isConfirmPassword = name === 'confirmPassword';
-    const hasError = isConfirmPassword ? meta.error : (meta.touched && meta.error);
-    const baseStyles = tw`rounded-lg`;
-    
-    switch (variant) {
-      case 'filled':
-        return [
-          baseStyles,
-          tw`bg-itGray border-0`,
-          isFocused && tw`bg-white border-2 border-itPrimary`,
-          hasError && tw`border-2 border-itRed`,
-        ];
-      case 'outlined':
-        return [
-          baseStyles,
-          tw`bg-transparent border-2 border-itGray`,
-          isFocused && tw`border-itPrimary`,
-          hasError && tw`border-itRed`,
-        ];
-      default:
-        return [
-          baseStyles,
-          tw`bg-white border border-itGray`,
-          isFocused && tw`border-itPrimary`,
-          hasError && tw`border-itRed`,
-        ];
-    }
-  };
-
-  const getSizeStyles = () => {
-    switch (size) {
-      case 'small':
-        return tw`px-3 py-2`;
-      case 'large':
-        return tw`px-4 py-4`;
-      default:
-        return tw`px-4 py-3`;
-    }
-  };
-
-  const getTextSizeStyles = () => {
-    switch (size) {
-      case 'small':
-        return tw`text-sm`;
-      case 'large':
-        return tw`text-lg`;
-      default:
-        return tw`text-base`;
-    }
-  };
-
-  const handleFocus = () => {
+  // handleFocus now receives FocusEvent
+  const handleFocus = (e: FocusEvent) => {
     setIsFocused(true);
-    onFocus?.();
+    onFocus?.(e);
   };
 
-  const handleBlur = () => {
+  // handleBlur now receives BlurEvent
+  const handleBlur = (e: BlurEvent) => {
     setIsFocused(false);
     helpers.setTouched(true);
-    onBlur?.();
+    onBlur?.(e);
   };
 
   const togglePasswordVisibility = () => {
@@ -129,87 +77,58 @@ const Input: React.FC<InputProps> = ({
   const hasError = meta.touched && meta.error;
 
   return (
-    <View style={[style]}>
-      {label && (
-        <Text
-          style={[
-            tw`text-base mb-1 text-itDarkGray font-medium`,
-            hasError && tw`text-itRed`,
-            labelStyle,
-          ]}
-        >
-          {label}
-        </Text>
-      )}
-      
-      <View style={tw`relative`}>
-        <View
-          style={[
-            tw`flex-row items-center`,
-            ...getVariantStyles(),
-            getSizeStyles(),
-            disabled && tw`opacity-50 bg-gray-100`,
-          ]}
-        >
-          {leftIcon && (
-            <View style={tw`mr-3`}>
-              {leftIcon}
-            </View>
-          )}
+    <View style={[inputStyles.container, containerStyle]}>
+      {label && <Text style={inputStyles.label}>{label}</Text>}
 
-          <TextInput
-            style={[
-              tw`flex-1 text-itDarkGray`,
-              getTextSizeStyles(),
-              inputStyle,
-            ]}
-            value={field.value}
-            onChangeText={helpers.setValue}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeholder={placeholder}
-            placeholderTextColor="#9ca3af"
-            secureTextEntry={secureTextEntry && !isPasswordVisible}
-            editable={!disabled}
-            keyboardType={keyboardType}
-            autoCapitalize={autoCapitalize}
-            autoComplete={autoComplete}
-            testID={testID}
-            maxLength={maxLength}
-            {...props}
-          />
+      <View
+        style={[
+          inputStyles.base,
+          isFocused && inputStyles.focused,
+          hasError && inputStyles.error,
+          disabled && { opacity: 0.5, backgroundColor: '#f3f4f6' },
+        ]}
+      >
+        {leftIcon && <View style={{ marginRight: 8 }}>{leftIcon}</View>}
 
-          {secureTextEntry && (
-            <TouchableOpacity
-              onPress={togglePasswordVisibility}
-              style={tw`ml-3`}
-              testID={`${testID}-password-toggle`}
-            >
-              <Icon 
-                name={isPasswordVisible ? 'visibility-off' : 'visibility'} 
-                size={20} 
-                color="#1c3a69" 
-              />
-            </TouchableOpacity>
-          )}
+        <TextInput
+          style={inputStyles.textInput as StyleProp<TextStyle>}
+          value={field.value}
+          onChangeText={helpers.setValue}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholder={placeholder}
+          placeholderTextColor="#9ca3af"
+          secureTextEntry={secureTextEntry && !isPasswordVisible}
+          editable={!disabled}
+          keyboardType={keyboardType}
+          autoCapitalize={autoCapitalize}
+          autoComplete={autoComplete}
+          testID={testID}
+          maxLength={maxLength}
+        />
 
-          {rightIcon && !secureTextEntry && (
-            <View style={tw`ml-3`}>
-              {rightIcon}
-            </View>
-          )}
-        </View>
+        {secureTextEntry && (
+          <TouchableOpacity
+            onPress={togglePasswordVisibility}
+            style={{ marginLeft: 8 }}
+            testID={`${testID}-password-toggle`}
+          >
+            <Icon
+              name={isPasswordVisible ? 'visibility-off' : 'visibility'}
+              size={22}
+              color="#6b7280"
+            />
+          </TouchableOpacity>
+        )}
+
+        {rightIcon && !secureTextEntry && (
+          <View style={{ marginLeft: 8 }}>{rightIcon}</View>
+        )}
       </View>
 
       {hasError && (
-        <Text
-          style={[
-            tw`text-red-400 text-sm`,
-            errorStyle,
-          ]}
-          testID={`${testID}-error`}
-        >
-          {typeof meta.error === 'string' ? meta.error : 'Error en el campo'}
+        <Text style={inputStyles.errorMessage} testID={`${testID}-error`}>
+          {meta.error}
         </Text>
       )}
     </View>

@@ -42,9 +42,6 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
         placeholder={strings.auth.login.emailPlaceholder}
         keyboardType="email-address"
         autoCapitalize="none"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         autoComplete="email"
         leftIcon={<Icon name="email" size={20} color={itPrimary} />}
         testID="login-email-input"
@@ -58,8 +55,6 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
         secureTextEntry={true}
         autoCapitalize="none"
         autoComplete="password"
-        labelStyle={tw`text-gray-600 text-sm`}
-        errorStyle={tw`text-xs text-red-500`}
         leftIcon={<Icon name="lock" size={20} color={itPrimary} />}
         testID="login-password-input"
       />
