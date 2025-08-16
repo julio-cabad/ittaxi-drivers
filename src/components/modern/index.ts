@@ -1,1 +1,15 @@
-export { default as AnimatedBackground } from './AnimatedBackground';
+export { 
+  AnimatedBackground as default,
+  AnimatedBackground,
+  AnimatedBackgroundWithOrientation,
+  type BackgroundVariant 
+} from './AnimatedBackground';
+
+export {
+  AnimatedLogo,
+  MemoizedAnimatedLogo,
+  useLogoAnimation,
+  type LogoSize,
+  type AnimationType,
+  type GlowVariant,
+} from './AnimatedLogo';
