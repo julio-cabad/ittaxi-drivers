@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ViewStyle, StatusBar, Platform } from 'react-native';
 import { SafeAreaView, Edge } from 'react-native-safe-area-context';
 import tw from 'twrnc';
-import { itBg } from '../../utils';
+import { itBg } from '../../utils/colors';
 
 interface ScreenWrapperProps {
   children: React.ReactNode;

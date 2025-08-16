@@ -71,9 +71,9 @@ const Login = () => {
 
   return (
     <ScreenWrapper>
-      {/* Background Gradient */}
+      {/* Enhanced Background Gradient */}
       <LinearGradient
-        colors={['#1c3a69', '#2563eb', '#1e40af']}
+        colors={['#667eea', '#764ba2', '#f093fb']}
         style={onboardingStyles.gradientBackground}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

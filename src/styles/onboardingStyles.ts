@@ -35,29 +35,39 @@ export const onboardingStyles = StyleSheet.create({
     lineHeight: 24,
   },
 
-  // Form Card - Ocupa el resto del espacio disponible
+  // Form Card - Diseño moderno mejorado
   formCard: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     paddingHorizontal: 24,
-    paddingTop: 24, // Aumentado de 2 a 24 para mejor espaciado
+    paddingTop: 32, // Más espaciado superior
     paddingBottom: 20,
-    shadowColor: '#000',
+    // Enhanced shadow system
+    shadowColor: '#667eea',
     shadowOffset: {
       width: 0,
-      height: -4,
+      height: -8,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 15,
   },
 
-  // Logo
+  // Logo with modern effects
   logoContainer: {
-    marginBottom: 2,
+    marginBottom: 8,
     alignItems: 'center',
+    // Subtle glow effect
+    shadowColor: '#667eea',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   logo: {
     width: 180,
