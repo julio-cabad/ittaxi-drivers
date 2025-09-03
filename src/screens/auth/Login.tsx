@@ -94,7 +94,7 @@ const Login = () => {
         >
           <ScrollView 
             contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
+            keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
           >
             {/* Header Section */}

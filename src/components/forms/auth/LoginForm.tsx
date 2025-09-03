@@ -22,7 +22,7 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
 
     // Validar el formulario
     const errors = await formik.validateForm();
-    
+
     // Si hay errores, no continuar
     if (Object.keys(errors).length > 0) {
       return;
@@ -40,15 +40,13 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
       <ModernInput
         name="email"
         label={strings.auth.login.emailLabel}
-        placeholder={strings.auth.login.emailPlaceholder}
-        variant="default"
         size="medium"
+        height={50} // Altura personalizada - puedes cambiar este valor
         keyboardType="email-address"
         autoCapitalize="none"
         autoComplete="email"
         leftIcon={<Icon name="email" size={20} color={itPrimary} />}
         showSuccessIndicator={true}
-        animationDelay={100}
         testID="login-email-input"
       />
 
@@ -56,15 +54,13 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
       <ModernInput
         name="password"
         label={strings.auth.login.passwordLabel}
-        placeholder={strings.auth.login.passwordPlaceholder}
-        variant="default"
         size="medium"
+        height={50} // Altura personalizada - puedes cambiar este valor
         secureTextEntry={true}
         autoCapitalize="none"
         autoComplete="password"
         leftIcon={<Icon name="lock" size={20} color={itPrimary} />}
         showSuccessIndicator={true}
-        animationDelay={200}
         testID="login-password-input"
       />
 
@@ -86,7 +82,7 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
             shadowOpacity: 0.3,
             shadowRadius: 8,
             elevation: 8,
-          }
+          },
         ]}
         testID="login-submit-button"
       >

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   TextInput,
   Text,
@@ -14,6 +14,7 @@ import { useField } from 'formik';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { itPrimary, itRed } from '../../utils/colors';
 
+
 export type InputVariant = 'default' | 'filled' | 'outlined' | 'underlined';
 export type InputSize = 'small' | 'medium' | 'large';
 
@@ -23,6 +24,7 @@ interface ModernInputProps {
   placeholder?: string;
   variant?: InputVariant;
   size?: InputSize;
+  height?: number; // Nueva prop para altura personalizada
   secureTextEntry?: boolean;
   disabled?: boolean;
   leftIcon?: React.ReactNode;
@@ -46,6 +48,7 @@ const ModernInput: React.FC<ModernInputProps> = ({
   label,
   placeholder,
   size = 'medium',
+  height, // Nueva prop para altura personalizada
   secureTextEntry = false,
   disabled = false,
   leftIcon,
@@ -67,8 +70,8 @@ const ModernInput: React.FC<ModernInputProps> = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   // Animation values using React Native's Animated API
-  const labelAnimation = new Animated.Value(field.value ? 1 : 0);
-  const scaleAnimation = new Animated.Value(1);
+  const labelAnimation = useRef(new Animated.Value(field.value ? 1 : 0)).current;
+  const scaleAnimation = useRef(new Animated.Value(1)).current;
 
   const hasError = meta.touched && meta.error;
   const hasValue = field.value && field.value.length > 0;
@@ -103,7 +106,7 @@ const ModernInput: React.FC<ModernInputProps> = ({
       Animated.timing(labelAnimation, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     }
 
@@ -122,17 +125,25 @@ const ModernInput: React.FC<ModernInputProps> = ({
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // Get size styles
+  // Get size styles - now with custom height support
   const getSizeStyles = () => {
-    switch (size) {
-      case 'small':
-        return { height: 36, paddingHorizontal: 12, fontSize: 14 };
-      case 'large':
-        return { height: 56, paddingHorizontal: 20, fontSize: 18 };
-      case 'medium':
-      default:
-        return { height: 44, paddingHorizontal: 16, fontSize: 16 };
+    const baseStyles = {
+      small: { height: 48, paddingHorizontal: 16, fontSize: 14 },
+      large: { height: 72, paddingHorizontal: 24, fontSize: 18 },
+      medium: { height: 64, paddingHorizontal: 20, fontSize: 17 },
+    };
+
+    const selectedStyle = baseStyles[size] || baseStyles.medium;
+
+    // Si se pasa height personalizado, lo usamos
+    if (height) {
+      return {
+        ...selectedStyle,
+        height: height,
+      };
     }
+
+    return selectedStyle;
   };
 
   const sizeStyles = getSizeStyles();
@@ -198,6 +209,7 @@ const ModernInput: React.FC<ModernInputProps> = ({
             },
             inputStyle,
           ]}
+          cursorColor={itPrimary}
           value={field.value}
           onChangeText={helpers.setValue}
           onFocus={handleFocus}
@@ -253,23 +265,23 @@ const ModernInput: React.FC<ModernInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginBottom: 20, // Más espacio entre inputs
   },
   label: {
     position: 'absolute',
-    left: 16,
-    top: 12,
+    left: 20,
+    top: 18, // Ajustado para inputs más grandes
     zIndex: 1,
     backgroundColor: '#ffffff',
-    paddingHorizontal: 4,
-    fontSize: 14,
-    fontWeight: '500',
+    paddingHorizontal: 6,
+    fontSize: 15,
+    fontWeight: '600',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 2,
-    borderRadius: 12,
+    borderWidth: 1,
+    borderRadius: 16, // Más redondeado
     backgroundColor: '#ffffff',
     shadowColor: '#000',
     shadowOffset: {
@@ -277,13 +289,11 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 1,
   },
   textInput: {
     flex: 1,
-    fontFamily: 'System',
-    includeFontPadding: false,
-    textAlignVertical: 'center',
+    // fontFamily: 'System',
   },
   leftIcon: {
     marginRight: 8,
@@ -302,7 +312,7 @@ const styles = StyleSheet.create({
     color: itRed,
     fontSize: 14,
     marginTop: 4,
-    marginLeft: 16,
+    marginLeft: 20,
   },
   disabled: {
     opacity: 0.5,
