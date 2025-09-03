@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from '../../commons';
-import { ModernInput } from '../../modern';
+import { FormField } from '../../commons/FormField';
 import { LoginFormContentProps } from '../../../types/auth';
 import { strings } from '../../../constants/strings';
 import tw from 'twrnc';
@@ -37,7 +37,7 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
   return (
     <View style={tw`w-full`}>
       {/* Email Input */}
-      <ModernInput
+      <FormField
         name="email"
         label={strings.auth.login.emailLabel}
         size="medium"
@@ -51,7 +51,7 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
       />
 
       {/* Password Input */}
-      <ModernInput
+      <FormField
         name="password"
         label={strings.auth.login.passwordLabel}
         size="medium"
