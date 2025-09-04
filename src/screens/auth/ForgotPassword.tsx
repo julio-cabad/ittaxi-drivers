@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '../../navigation/AuthNavigator';
-import { ScreenWrapper } from '../../components/layout';
+import { AuthScreenWrapper } from '../../components/layout';
 import { Button } from '../../components/commons';
 
 import tw from 'twrnc';
@@ -11,7 +11,7 @@ const ForgotPassword = () => {
   const navigation = useNavigation<AuthNavigationProp>();
 
   return (
-    <ScreenWrapper>
+    <AuthScreenWrapper>
       <View style={tw`flex-1 justify-center items-center px-6`}>
         <Text style={tw`text-3xl mb-8 text-itPrimary font-bold`}>
           Forgot Password
@@ -30,7 +30,7 @@ const ForgotPassword = () => {
           </Button>
         </View>
       </View>
-    </ScreenWrapper>
+    </AuthScreenWrapper>
   );
 };
 

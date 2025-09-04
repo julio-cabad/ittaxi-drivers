@@ -2,7 +2,7 @@ export const strings = {
   // Auth Screens
   auth: {
     login: {
-      title: 'Bienvenido de Vuelta',
+      title: 'Bienvenido de vuelta',
       subtitle: 'Inicia sesión para continuar en InstaTaxi Conductores',
       emailLabel: 'Correo Electrónico',
       emailPlaceholder: 'Ingresa tu correo electrónico',

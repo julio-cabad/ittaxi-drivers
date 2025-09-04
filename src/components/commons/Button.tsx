@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
   StyleSheet,
+  StyleProp,
 } from 'react-native';
 import { itPrimary, itSecondary } from '../../utils/colors';
 import tw from 'twrnc';
@@ -23,8 +24,8 @@ interface ButtonProps {
   disabled?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   testID?: string;
 }
 

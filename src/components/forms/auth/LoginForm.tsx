@@ -7,6 +7,7 @@ import { LoginFormContentProps } from '../../../types/auth';
 import { strings } from '../../../constants/strings';
 import tw from 'twrnc';
 import { itPrimary } from '../../../utils';
+import { styles } from './LoginForm.styles';
 
 const LoginFormContent: React.FC<LoginFormContentProps> = ({
   formik,
@@ -62,28 +63,17 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
         leftIcon={<Icon name="lock" size={20} color={itPrimary} />}
         showSuccessIndicator={true}
         testID="login-password-input"
+        containerStyle={tw`mt-2`}
       />
 
       {/* Submit Button - MODERNIZED */}
       <Button
         variant="primary"
-        size="large"
+        size="medium"
         loading={loading}
         disabled={!formik.isValid || formik.isSubmitting || loading}
         onPress={handleSubmit}
-        style={[
-          tw`mt-8`,
-          {
-            backgroundColor: '#667eea',
-            borderRadius: 16,
-            height: 56,
-            shadowColor: '#667eea',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.3,
-            shadowRadius: 8,
-            elevation: 8,
-          },
-        ]}
+        style={styles.submitButton}
         testID="login-submit-button"
       >
         {loading

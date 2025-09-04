@@ -7,3 +7,4 @@ export const itRed = '#ef4444';
 export const itGreen = '#10b981';
 export const itYellow = '#f59e0b';
 export const itBg = '#f8fafc';
+export const itPurple = '#764ba2';
