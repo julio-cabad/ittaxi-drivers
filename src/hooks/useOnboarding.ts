@@ -94,11 +94,13 @@ export const useOnboarding = () => {
             // Marcar como sincronizado en Realm
             await realmService.markAsSynced(user.uid);
           } catch (firestoreError) {
-            console.warn(
-              '⚠️ Error sincronizando con Firestore (continuando con Realm):',
-              firestoreError,
+            throw new Error(
+              `Firestore error: ${
+                firestoreError instanceof Error
+                  ? firestoreError.message
+                  : 'Error desconocido'
+              }`,
             );
-            // No fallar si Firestore falla, Realm es suficiente
           }
         }
 
@@ -338,13 +340,9 @@ export const useOnboarding = () => {
     }
 
     try {
-      console.log('🔄 loadUserData: Cargando datos desde storage...');
       const progress = await getProgress();
 
       if (progress?.userData) {
-        console.log('✅ loadUserData: Datos encontrados, actualizando Redux');
-        console.log('📊 userData:', progress.userData);
-
         // Actualizar Redux con los datos recuperados
         dispatch(
           updateOnboardingProgress({
@@ -358,11 +356,9 @@ export const useOnboarding = () => {
 
         return { success: true };
       } else {
-        console.log('⚠️ loadUserData: No se encontraron datos guardados');
         return { success: false, error: 'No hay datos guardados' };
       }
     } catch (error) {
-      console.error('❌ loadUserData: Error cargando datos:', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Error desconocido',

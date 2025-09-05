@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '../../../navigation/AuthNavigator';
 import { SCREEN_NAMES, strings } from '../../../constants';
@@ -21,7 +16,7 @@ import { itPurple } from '../../../utils/colors';
 const Login = () => {
   const navigation = useNavigation<AuthNavigationProp>();
   const { login, isLoggingIn, isAuthenticated, user } = useAuth();
-  const { recoverProgress } = useOnboarding();
+  const { recoverProgress, loadUserData } = useOnboarding();
   const [isCheckingProgress, setIsCheckingProgress] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
 
@@ -35,6 +30,7 @@ const Login = () => {
         setHasChecked(true);
         const recovery = await recoverProgress();
         if (recovery.shouldNavigate && recovery.targetScreen) {
+          await loadUserData();
           setTimeout(() => {
             navigation.navigate(recovery.targetScreen as never);
           }, 100);
@@ -46,7 +42,7 @@ const Login = () => {
       }
     };
     checkAndNavigateToProgress();
-  }, [isAuthenticated, user]);
+  }, [hasChecked, isAuthenticated, loadUserData, navigation, recoverProgress, user]);
 
   const handleLogin = async (values: LoginFormData) => {
     await login(values);
@@ -56,7 +52,9 @@ const Login = () => {
     return (
       <View style={loginStyles.progressLoadingContainer}>
         <ActivityIndicator size="large" color="#2563eb" />
-        <Text style={loginStyles.progressLoadingText}>Recuperando progreso...</Text>
+        <Text style={loginStyles.progressLoadingText}>
+          Recuperando progreso...
+        </Text>
       </View>
     );
   }
@@ -71,7 +69,13 @@ const Login = () => {
         </View>
       </View>
 
-      <View style={[loginStyles.formCard, complexLoginStyles.formCard, { minHeight: 500 }]}>
+      <View
+        style={[
+          loginStyles.formCard,
+          complexLoginStyles.formCard,
+          { minHeight: 500 },
+        ]}
+      >
         <View style={complexLoginStyles.logoContainer}>
           <Image
             source={require('../../../assets/logo.png')}
@@ -106,7 +110,12 @@ const Login = () => {
                 {strings.auth.login.forgotPassword}
               </TextLink>
 
-              <View style={[loginStyles.footerLinks, { marginTop: 'auto', paddingTop: 20 }]}>
+              <View
+                style={[
+                  loginStyles.footerLinks,
+                  { marginTop: 'auto', paddingTop: 20 },
+                ]}
+              >
                 <View style={loginStyles.loginContainer}>
                   <Text style={loginStyles.alreadyAccountText}>
                     {strings.auth.login.noAccount}

@@ -32,50 +32,18 @@ const ReviewAndSubmitScreen = () => {
 
   // 🔄 Cargar datos del usuario al montar el componente
   useEffect(() => {
-    console.log('-=-=-=-=-=-=-=-=-=-===', userData)
     const initializeData = async () => {
       try {
-        setIsLoadingData(true);
-        console.log('🔄 ReviewAndSubmitScreen: Iniciando carga de datos...');
-        console.log('🔄 ReviewAndSubmitScreen: userData ANTES:', userData);
-
-        // Verificar que el usuario esté autenticado
-        if (!user?.uid) {
-          console.log(
-            '❌ ReviewAndSubmitScreen: Usuario no autenticado, esperando...',
-          );
-          setIsLoadingData(false);
-          return;
-        }
-
-        // Cargar datos desde Realm/Firestore a Redux
-        console.log('🚀 ReviewAndSubmitScreen: Llamando loadUserData...');
-        const loadResult = await loadUserData();
-        console.log(
-          '🚀 ReviewAndSubmitScreen: loadUserData RESULTADO:',
-          loadResult,
-        );
-
-        if (loadResult.success) {
-          console.log('✅ ReviewAndSubmitScreen: Datos cargados exitosamente');
-        } else {
-          console.log(
-            '⚠️ ReviewAndSubmitScreen: No se pudieron cargar datos:',
-            loadResult.error,
-          );
-        }
+        await loadUserData();
       } catch (error) {
-        console.error(
-          '❌ ReviewAndSubmitScreen: Error inicializando datos:',
-          error,
-        );
+        throw error;
       } finally {
         setIsLoadingData(false);
       }
     };
 
     // Solo ejecutar si no tenemos datos en Redux
-    if (!userData.personal) {
+    if (!userData) {
       initializeData();
     } else {
       setIsLoadingData(false);
@@ -91,16 +59,11 @@ const ReviewAndSubmitScreen = () => {
       const existingProgress = await getProgress();
 
       if (!existingProgress || existingProgress.currentStep < 5) {
-        console.log('🎯 ReviewAndSubmitScreen: Registrando llegada al Step 5');
         const emptyReviewData = {
           reviewCompleted: false,
           submissionDate: null,
         };
         await saveProgress(5, emptyReviewData);
-      } else {
-        console.log(
-          '🎯 ReviewAndSubmitScreen: Ya hay datos guardados, no sobrescribir',
-        );
       }
     };
 
@@ -254,7 +217,8 @@ const ReviewAndSubmitScreen = () => {
             Nombre: {userData.personal?.firstName} {userData.personal?.lastName}
           </Text>
           <Text style={tw`text-gray-700 mb-2`}>
-            Teléfono: {userData.personal?.phone || userData.personal?.phoneNumber}
+            Teléfono:{' '}
+            {userData.personal?.phone || userData.personal?.phoneNumber}
           </Text>
           <Text style={tw`text-gray-700 mb-2`}>
             Fecha de Nacimiento: {userData.personal?.dateOfBirth}

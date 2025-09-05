@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
@@ -9,18 +9,13 @@ import { realmService } from './src/database/RealmService';
 import AuthNavigator from './src/navigation/AuthNavigator';
 
 function App() {
-  const [isRealmInitialized, setIsRealmInitialized] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        console.log('🔄 Inicializando Realm...');
         await realmService.initialize();
-        console.log('✅ Realm inicializado correctamente');
-        setIsRealmInitialized(true);
       } catch (error) {
-        console.error('❌ Error inicializando Realm:', error);
         setInitError(
           error instanceof Error ? error.message : 'Error desconocido',
         );
@@ -30,21 +25,13 @@ function App() {
     initializeApp();
   }, []);
 
-  // Mostrar loading mientras se inicializa Realm
-  if (!isRealmInitialized && !initError) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#2563eb" />
-        <Text style={styles.loadingText}>Inicializando base de datos...</Text>
-      </View>
-    );
-  }
-
   // Mostrar error si falla la inicialización
   if (initError) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorTitle}>Error de Inicialización</Text>
+        <Text style={styles.errorTitle}>
+          Error de Inicialización, salga de la app y vuelva a intentarlo
+        </Text>
         <Text style={styles.errorText}>{initError}</Text>
       </View>
     );
