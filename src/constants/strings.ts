@@ -177,5 +177,63 @@ export const strings = {
         unknownError: 'Error desconocido',
       },
     },
+    vehiclePhotos: {
+      success: {
+        photoUploaded: 'Foto subida',
+        photoUploadedMessage: 'La foto se subió correctamente',
+        photosSaved: 'Fotos guardadas',
+        photosSavedMessage: 'Tus fotos han sido guardadas correctamente',
+      },
+      error: {
+        uploadPhoto: 'Error al subir foto',
+        missingPhotos: 'Fotos faltantes',
+        missingPhotosMessage: 'Por favor sube todas las fotos requeridas',
+        uploadsInProgress: 'Subidas en progreso',
+        uploadsInProgressMessage: 'Espera a que terminen de subir todas las fotos',
+        authenticationError: 'Error de autenticación',
+        authenticationErrorMessage: 'Debes iniciar sesión para continuar',
+        saveError: 'Error al guardar',
+        saveErrorMessage: 'No se pudieron guardar las fotos',
+        unknownError: 'Error desconocido',
+      },
+      labels: {
+        frontPhoto: 'Foto Frontal',
+        sidePhoto: 'Foto Lateral (Izquierda o Derecha)',
+        rearPhoto: 'Foto Trasera',
+        interiorPhoto: 'Foto Interior',
+      },
+      placeholders: {
+        frontPhoto: 'Toca para subir la foto frontal de tu vehículo',
+        sidePhoto: 'Toca para subir la foto lateral de tu vehículo',
+        rearPhoto: 'Toca para subir la foto trasera de tu vehículo',
+        interiorPhoto: 'Toca para subir la foto interior de tu vehículo',
+      },
+    },
+    reviewAndSubmit: {
+      title: 'Revisar y Enviar',
+      subtitle: 'Por favor, revisa cuidadosamente toda tu información antes de enviar tu solicitud.',
+      sections: {
+        personalData: '📋 Datos Personales',
+        vehicleData: '🚗 Datos del Vehículo',
+        documents: '📄 Documentos',
+        vehiclePhotos: '📸 Fotos del Vehículo',
+      },
+      documentStatus: {
+        uploaded: 'Subida',
+        notUploaded: 'No Subida',
+      },
+      button: {
+        submit: 'Enviar Solicitud',
+        submitting: 'Enviando...',
+      },
+      success: {
+        submissionSuccess: 'Solicitud Enviada',
+        submissionSuccessMessage: 'Tu solicitud ha sido enviada correctamente y está en revisión.',
+      },
+      error: {
+        submissionError: 'Error al enviar solicitud',
+        submissionErrorMessage: 'No se pudo enviar tu solicitud. Inténtalo de nuevo.',
+      },
+    },
   },
 };

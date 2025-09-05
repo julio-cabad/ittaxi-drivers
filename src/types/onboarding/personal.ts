@@ -3,15 +3,18 @@ export interface PersonalData {
   lastName: string;
   email: string;
   phone: string;
+  phoneNumber: string; // Agregar para compatibilidad
   address: string;
   city: string;
   state: string;
   zipCode: string;
   dateOfBirth: string;
+  birthDate: string; // Agregar para compatibilidad
   nationalId: string;
   emergencyContact: {
     name: string;
     phone: string;
+    phoneNumber: string; // Agregar para compatibilidad
     relationship: string;
   };
 }
