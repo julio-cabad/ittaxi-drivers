@@ -181,13 +181,13 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
       <Button
         variant="primary"
         size="medium"
-        loading={loading}
+        loading={loading || formik.isSubmitting}
         disabled={!formik.isValid || formik.isSubmitting || loading}
         onPress={handleSubmit}
         style={authStyles.registerButton}
         testID="personal-data-submit-button"
       >
-        {loading ? 'Guardando...' : 'Continuar'}
+        {loading || formik.isSubmitting ? 'Guardando...' : 'Continuar'}
       </Button>
     </View>
   );

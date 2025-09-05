@@ -169,7 +169,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
     setIsModalVisible(true);
     setCurrentDate(field.value || new Date().toISOString().split('T')[0]);
     setViewMode('day');
-    handleFocus();
+    // Solo manejar el estado visual, no llamar onFocus para evitar interferir con el teclado
+    setIsFocused(true);
+    Animated.timing(labelAnimation, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   };
 
   const handleModalClose = () => {

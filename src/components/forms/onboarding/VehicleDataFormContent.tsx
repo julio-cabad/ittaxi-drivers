@@ -1,82 +1,123 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { FormikProps } from 'formik';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Input, Button } from '../../commons';
+import { Button, AppText, FormField } from '../../commons';
 import { VehicleData } from '../../../types/onboarding';
-import { itPrimary } from '../../../utils/colors';
+import { itPrimary, itDarkGray } from '../../../utils/colors';
+import { authStyles } from '../../../styles/components/auth';
 import tw from 'twrnc';
 
 interface VehicleDataFormContentProps {
   formik: FormikProps<VehicleData>;
+  onSubmit?: (values: VehicleData) => void;
+  loading?: boolean;
 }
 
 const VehicleDataFormContent: React.FC<VehicleDataFormContentProps> = ({
   formik,
+  onSubmit,
+  loading = false,
 }) => {
-  const handleSubmit = () => {
-    formik.handleSubmit();
+  const handleSubmit = async () => {
+    formik.setTouched({
+      make: true,
+      model: true,
+      year: true,
+      licensePlate: true,
+      color: true,
+    });
+
+    const errors = await formik.validateForm();
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    if (formik.isValid && !formik.isSubmitting) {
+      Keyboard.dismiss();
+      if (onSubmit) {
+        await onSubmit(formik.values);
+      } else {
+        formik.handleSubmit();
+      }
+    }
   };
 
   return (
     <View style={tw`w-full`}>
-      <Text style={tw`text-lg font-semibold text-gray-800 mb-4`}>
-        Información del Vehículo
-      </Text>
+      <AppText
+        fontSize={18}
+        fontWeight="600"
+        color={itDarkGray}
+        style={tw`mb-4 mt-2`}
+      >
+        🚗 Información del Vehículo
+      </AppText>
 
-      <Input
+      <FormField
         name="make"
         label="Marca"
-        placeholder="Ej: Toyota"
         autoCapitalize="words"
         leftIcon={<Icon name="directions-car" size={20} color={itPrimary} />}
-        style={tw`mb-3`}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
       />
-      <Input
+      <FormField
         name="model"
         label="Modelo"
-        placeholder="Ej: Corolla"
         autoCapitalize="words"
         leftIcon={<Icon name="style" size={20} color={itPrimary} />}
-        style={tw`mb-3`}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
-      <Input
+      <FormField
         name="year"
         label="Año"
-        placeholder="Ej: 2022"
         keyboardType="numeric"
         leftIcon={<Icon name="calendar-today" size={20} color={itPrimary} />}
-        style={tw`mb-3`}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
-      <Input
+      <FormField
         name="licensePlate"
         label="Matrícula"
-        placeholder="Ej: ABC1234"
         autoCapitalize="characters"
         leftIcon={<Icon name="pin" size={20} color={itPrimary} />}
-        style={tw`mb-3`}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
-      <Input
+      <FormField
         name="color"
         label="Color"
-        placeholder="Ej: Rojo"
         autoCapitalize="words"
         leftIcon={<Icon name="color-lens" size={20} color={itPrimary} />}
-        style={tw`mb-3`}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
       <Button
         variant="primary"
-        size="large"
-        loading={formik.isSubmitting}
-        disabled={formik.isSubmitting}
+        size="medium"
+        loading={loading || formik.isSubmitting}
+        disabled={!formik.isValid || formik.isSubmitting || loading}
         onPress={handleSubmit}
-        style={tw`mt-8`}
+        style={authStyles.registerButton}
+        testID="vehicle-data-submit-button"
       >
-        {formik.isSubmitting ? 'Guardando' : 'Continuar'}
+        {loading || formik.isSubmitting ? 'Guardando...' : 'Continuar'}
       </Button>
     </View>
   );
-};
+}
 
 export default VehicleDataFormContent;
