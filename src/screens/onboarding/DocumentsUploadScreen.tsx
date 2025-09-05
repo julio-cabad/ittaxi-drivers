@@ -9,6 +9,7 @@ import { AuthScreenWrapper } from '../../components/layout';
 import { AppText, Button } from '../../components/commons';
 import { ImageUploadField } from '../../components/onboarding/ImageUploadField';
 import { useOnboarding } from '../../hooks/useOnboarding';
+import { useAuth } from '../../hooks/useAuth';
 import { firebaseStorageService } from '../../config/firebaseStorage';
 import { DocumentType } from '../../utils/imageValidation';
 import { showSuccessToast, showErrorToast } from '../../utils/toastUtils';
@@ -30,10 +31,13 @@ import { itDarkGray } from '../../utils';
 const DocumentsUploadScreen = () => {
   const navigation = useNavigation<AuthNavigationProp>();
   const { saveStepDataAndAdvance } = useOnboarding();
+  const { user } = useAuth();
   const existingDocuments = useSelector(
     (state: RootState) => state.onboarding.userData.documents,
   );
-  const userId = useSelector((state: RootState) => state.onboarding.userId);
+
+  // Use authenticated user ID instead of onboarding userId
+  const userId = user?.uid || null;
 
   const [uploadedDocuments, setUploadedDocuments] =
     useState<DocumentUploadUrls>(extractDocumentUrls(existingDocuments));
@@ -57,7 +61,7 @@ const DocumentsUploadScreen = () => {
   useEffect(() => {
     const loadExistingData = async () => {
       try {
-        logger.debug('DocumentsUploadScreen: Loading existing documents data');
+        
 
         if (existingDocuments) {
           const extractedUrls = extractDocumentUrls(existingDocuments);
@@ -356,6 +360,7 @@ const DocumentsUploadScreen = () => {
         );
       }
     } catch (error: any) {
+      console.log('error');
       showErrorToast('Error al guardar', error.message || 'Error desconocido');
     } finally {
       setIsSubmitting(false);
@@ -402,7 +407,6 @@ const DocumentsUploadScreen = () => {
         >
           📤 Adjunta los siguientes documentos requeridos
         </AppText>
-
 
         <ScrollView
           showsVerticalScrollIndicator={false}
