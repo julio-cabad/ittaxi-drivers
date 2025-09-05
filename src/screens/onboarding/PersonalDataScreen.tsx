@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '../../navigation/AuthNavigator';
-import { ScreenWrapper } from '../../components/layout';
+import { AuthScreenWrapper } from '../../components/layout';
 import { PersonalDataFormContent } from '../../components/forms';
 import { FormWrapper } from '../../components/forms';
-import { OnboardingHeader } from '../../components/onboarding/OnboardingHeader';
 import { PersonalDataFormValues } from '../../types/onboarding';
 import { personalDataValidationSchema, personalDataInitialValues } from '../../utils/validations';
 import { useOnboarding } from '../../hooks/useOnboarding';
 import { showSuccessToast } from '../../utils/toastUtils';
 import { logger } from '../../utils/logger';
-import { onboardingStyles } from '../../styles/components/onboarding';
-import { SCREEN_NAMES } from '../../constants';
+import { SCREEN_NAMES, strings } from '../../constants';
+import { loginStyles, complexLoginStyles } from '../auth/Login/Login.styles';
+import tw from 'twrnc';
 
 const PersonalDataScreen = () => {
   const navigation = useNavigation<AuthNavigationProp>();
@@ -71,54 +70,38 @@ const PersonalDataScreen = () => {
   };
 
   return (
-    <ScreenWrapper>
-      {/* Background Gradient */}
-      <LinearGradient
-        colors={['#1c3a69', '#2563eb', '#1e40af']}
-        style={onboardingStyles.gradientBackground}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-        {/* Header Section */}
-        <OnboardingHeader
-          title="Datos Personales"
-          subtitle="Información personal"
-          showBackButton={false}
-          variant="normal"
-        />
-
-        {/* Form Card */}
-        <View style={onboardingStyles.formCard}>
-          {/* Logo inside white card */}
-          <View style={onboardingStyles.logoContainer}>
-            <Image
-              source={require('../../assets/logo.png')}
-              style={onboardingStyles.logo}
-              resizeMode="contain"
-            />
-          </View>
-
-          {/* Subtitle */}
-          <Text style={onboardingStyles.formSubtitle}>
-            Completa tu información personal para continuar
+    <AuthScreenWrapper>
+      <View style={loginStyles.headerSection}>
+        <View style={loginStyles.welcomeTextContainer}>
+          <Text style={complexLoginStyles.welcomeTitle}>
+            Datos personales
           </Text>
-
-          {/* Formulario */}
-          <FormWrapper
-            initialValues={personalDataInitialValues}
-            validationSchema={personalDataValidationSchema}
-            onSubmit={handleFormSubmit}
-            scrollEnabled={true}
-          >
-            {formik => (
-              <PersonalDataFormContent
-                formik={formik}
-              />
-            )}
-          </FormWrapper>
         </View>
-      </LinearGradient>
-    </ScreenWrapper>
+      </View>
+
+      <View style={[loginStyles.formCard, complexLoginStyles.formCard, { minHeight: 500 }]}>
+        <View style={complexLoginStyles.logoContainer}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={complexLoginStyles.logo}
+            resizeMode="contain"
+          />
+        </View>
+
+        <FormWrapper
+          initialValues={personalDataInitialValues}
+          validationSchema={personalDataValidationSchema}
+          onSubmit={handleFormSubmit}
+          scrollEnabled={true}
+        >
+          {formik => (
+            <PersonalDataFormContent
+              formik={formik}
+            />
+          )}
+        </FormWrapper>
+      </View>
+    </AuthScreenWrapper>
   );
 };
 

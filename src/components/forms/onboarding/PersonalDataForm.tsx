@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Input, Button, DatePicker } from '../../commons';
+import { Button, DatePicker } from '../../commons';
+import { FormField } from '../../commons/FormField';
 import { itPrimary } from '../../../utils/colors';
 import { getMaxBirthDate, getMinBirthDate } from '../../../utils/dateHelpers';
 import {
@@ -27,39 +28,36 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
   return (
     <View style={tw`w-full`}>
       {/* Información Personal */}
-      <Text style={tw`text-lg font-semibold text-gray-800 mb-4`}>Información Personal</Text>
-
-      <Input
+      <FormField
         name="firstName"
         label="Nombre"
-        placeholder="Ingresa tu nombre"
         autoCapitalize="words"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="person" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
       />
 
-      <Input
+      <FormField
         name="lastName"
         label="Apellido"
-        placeholder="Ingresa tu apellido"
         autoCapitalize="words"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="person-outline" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
-      <Input
+      <FormField
         name="phoneNumber"
         label="Teléfono"
-        placeholder="+593987654321 o 0987654321"
         keyboardType="phone-pad"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="phone" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
       <DatePicker
@@ -72,69 +70,62 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         maxDate={getMaxBirthDate()}
         minDate={getMinBirthDate()}
       />
-      {/* Dirección */}
-      <Text style={tw`text-lg font-semibold text-gray-800 mb-4 mt-6`}>Dirección</Text>
-
-      <Input
+      <FormField
         name="city"
         label="Ciudad"
-        placeholder="Ingresa tu ciudad"
         autoCapitalize="words"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="location-city" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
-      <Input
+      <FormField
         name="address"
         label="Dirección"
-        placeholder="Calle, número"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="location-on" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
-      {/* Contacto de Emergencia */}
-      <Text style={tw`text-lg font-semibold text-gray-800 mb-4 mt-6`}>Contacto de Emergencia</Text>
-
-      <Input
+      <FormField
         name="emergencyContact.name"
         label="Nombre Completo"
-        placeholder="Nombre del contacto de emergencia"
         autoCapitalize="words"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="contact-emergency" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
-      <Input
+      <FormField
         name="emergencyContact.phoneNumber"
-        label="Teléfono"
-        placeholder="+593987654321 o 0987654321"
         keyboardType="phone-pad"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="phone" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
-      <Input
+      <FormField
         name="emergencyContact.relationship"
         label="Relación"
-        placeholder="Ej: Padre, Madre, Esposo/a, Hermano/a"
         autoCapitalize="words"
-        errorStyle={tw`text-xs text-red-500`}
-        style={tw`mb-3`}
-        labelStyle={tw`text-gray-600 text-sm`}
         leftIcon={<Icon name="family-restroom" size={20} color={itPrimary} />}
+        size="medium"
+        height={50}
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
       {/* Submit Button */}
       <Button
         variant="primary"
-        size="large"
+        size="medium"
         loading={formik.isSubmitting}
         disabled={formik.isSubmitting}
         onPress={handleSubmit}

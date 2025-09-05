@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from '../../commons';
 import { FormField } from '../../commons/FormField';
@@ -15,6 +15,7 @@ const RegisterFormContent: React.FC<RegisterFormContentProps> = ({
   loading = false,
 }) => {
   const handleSubmit = async () => {
+    Keyboard.dismiss();
     formik.setTouched({
       email: true,
       password: true,
