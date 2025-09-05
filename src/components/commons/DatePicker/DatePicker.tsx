@@ -18,18 +18,44 @@ import { DatePickerProps, ViewMode } from './DatePicker.types';
 // Configurar idioma español
 LocaleConfig.locales.es = {
   monthNames: [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
   ],
   monthNamesShort: [
-    'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    'Ene',
+    'Feb',
+    'Mar',
+    'Abr',
+    'May',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dic',
   ],
   dayNames: [
-    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
   ],
   dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-  today: 'Hoy'
+  today: 'Hoy',
 };
 LocaleConfig.defaultLocale = 'es';
 
@@ -56,11 +82,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [currentDate, setCurrentDate] = useState(
-    field.value || new Date().toISOString().split('T')[0]
+    field.value || new Date().toISOString().split('T')[0],
   );
   const [viewMode, setViewMode] = useState<ViewMode>('day');
 
-  const labelAnimation = useRef(new Animated.Value(field.value ? 1 : 0)).current;
+  const labelAnimation = useRef(
+    new Animated.Value(field.value ? 1 : 0),
+  ).current;
   const scaleAnimation = useRef(new Animated.Value(1)).current;
 
   const hasError = meta.touched && meta.error;
@@ -69,13 +97,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   // Efecto para manejar cambios en el valor del campo
   useEffect(() => {
-    if (hasValue && labelAnimation._value === 0) {
+    if (hasValue) {
       Animated.timing(labelAnimation, {
         toValue: 1,
         duration: 200,
         useNativeDriver: true,
       }).start();
-    } else if (!hasValue && !isFocused && labelAnimation._value === 1) {
+    } else if (!hasValue && !isFocused) {
       Animated.timing(labelAnimation, {
         toValue: 0,
         duration: 200,
@@ -119,21 +147,21 @@ const DatePicker: React.FC<DatePickerProps> = ({
     helpers.setValue(day.dateString);
     setIsModalVisible(false);
     setViewMode('day');
-    
+
     setIsFocused(false);
     helpers.setTouched(true);
-    
+
     Animated.timing(labelAnimation, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
     }).start();
-    
+
     Animated.spring(scaleAnimation, {
       toValue: 1,
       useNativeDriver: true,
     }).start();
-    
+
     onBlur?.();
   };
 
@@ -150,22 +178,45 @@ const DatePicker: React.FC<DatePickerProps> = ({
     handleBlur();
   };
 
-  const getSizeStyles = () => {
-    const baseStyles = {
-      small: { height: 48, paddingHorizontal: 16, fontSize: 14 },
-      large: { height: 72, paddingHorizontal: 24, fontSize: 18 },
-      medium: { height: 64, paddingHorizontal: 20, fontSize: 17 },
-    };
-    return baseStyles[size] || baseStyles.medium;
-  };
-
-  const sizeStyles = getSizeStyles();
   const today = new Date().toISOString().split('T')[0];
   const effectiveMaxDate = maxDate || today;
 
+  // Helper functions for dynamic styles
+  const getSizeStyle = () => {
+    switch (size) {
+      case 'small':
+        return styles.inputSmall;
+      case 'large':
+        return styles.inputLarge;
+      default:
+        return styles.inputMedium;
+    }
+  };
+
+  const getTextSizeStyle = () => {
+    switch (size) {
+      case 'small':
+        return styles.textSmall;
+      case 'large':
+        return styles.textLarge;
+      default:
+        return styles.textMedium;
+    }
+  };
+
+  const getInputStateStyle = () => {
+    if (hasError) return styles.inputError;
+    if (isFocused) return styles.inputFocused;
+    return styles.inputDefault;
+  };
+
   const years = useMemo(() => {
-    const min = minDate ? new Date(minDate).getFullYear() : new Date().getFullYear() - 100;
-    const max = maxDate ? new Date(maxDate).getFullYear() : new Date().getFullYear();
+    const min = minDate
+      ? new Date(minDate).getFullYear()
+      : new Date().getFullYear() - 100;
+    const max = maxDate
+      ? new Date(maxDate).getFullYear()
+      : new Date().getFullYear();
     return Array.from({ length: max - min + 1 }, (_, i) => max - i);
   }, [minDate, maxDate]);
 
@@ -245,7 +296,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   const renderMonthPicker = () => (
     <View style={styles.monthPickerContainer}>
-      {LocaleConfig.locales.es.monthNames.map((month, index) => (
+      {LocaleConfig.locales.es.monthNames.map((month: any, index: any) => (
         <TouchableOpacity
           key={index}
           style={styles.monthItem}
@@ -263,23 +314,25 @@ const DatePicker: React.FC<DatePickerProps> = ({
   );
 
   const markedDates = useMemo(() => {
-    const marks: any = {};
-    
-    if (field.value) {
+    const marks: Record<string, any> = {};
+
+    if (field.value && typeof field.value === 'string') {
       marks[field.value] = {
         selected: true,
         selectedColor: itPrimary,
         selectedTextColor: '#FFFFFF',
       };
     }
-    
-    marks[today] = {
-      marked: true,
-      dotColor: itPrimary,
-    };
-    
+
+    if (today && field.value !== today) {
+      marks[today] = {
+        marked: true,
+        dotColor: itPrimary,
+      };
+    }
+
     return marks;
-  }, [field.value, today, itPrimary]);
+  }, [field.value, today]);
 
   const renderContent = () => {
     switch (viewMode) {
@@ -337,19 +390,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
       {label && (
         <Animated.Text style={[styles.label, labelStyle, animatedLabelStyle]}>
           {label}
-          {required && <Text style={{ color: '#FF6B6B' }}> *</Text>}
+          {required && <Text style={{ color: '#FF6B6B' }}> </Text>}
         </Animated.Text>
       )}
 
       <TouchableOpacity
         style={[
           styles.inputContainer,
-          {
-            height: sizeStyles.height,
-            paddingHorizontal: sizeStyles.paddingHorizontal,
-            borderColor: hasError ? '#FF6B6B' : isFocused ? itPrimary : '#d1d5db',
-            shadowOpacity: isFocused ? 0.15 : 0.05,
-          },
+          getSizeStyle(),
+          getInputStateStyle(),
           disabled && styles.disabled,
           inputStyle,
         ]}
@@ -363,10 +412,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
         <Text
           style={[
             styles.inputText,
-            {
-              fontSize: sizeStyles.fontSize,
-              color: disabled ? '#9ca3af' : '#111827',
-            },
+            getTextSizeStyle(),
+            disabled ? styles.textDisabled : styles.textEnabled,
             !hasValue && styles.placeholder,
           ]}
         >
@@ -394,7 +441,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
       {hasError && (
         <Text style={styles.errorMessage} testID={`${testID}-error`}>
-          {String(meta.error)}
+          {typeof meta.error === 'string' ? meta.error : 'Error de validación'}
         </Text>
       )}
 
@@ -418,9 +465,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
               </TouchableOpacity>
             </View>
 
-            <View style={styles.calendarContainer}>
-              {renderContent()}
-            </View>
+            <View style={styles.calendarContainer}>{renderContent()}</View>
 
             <View style={styles.modalActions}>
               <TouchableOpacity

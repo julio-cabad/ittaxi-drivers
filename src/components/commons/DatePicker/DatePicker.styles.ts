@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 24,
     backgroundColor: itWhite,
     shadowColor: '#000',
     shadowOffset: {
@@ -61,6 +61,47 @@ const styles = StyleSheet.create({
   disabled: {
     opacity: 0.5,
     backgroundColor: '#f3f4f6',
+  },
+  // Dynamic input states
+  inputFocused: {
+    borderColor: itPrimary,
+    shadowOpacity: 0.15,
+  },
+  inputError: {
+    borderColor: '#FF6B6B',
+  },
+  inputDefault: {
+    borderColor: '#d1d5db',
+    shadowOpacity: 0.05,
+  },
+  // Size variants
+  inputSmall: {
+    height: 50,
+    paddingHorizontal: 16,
+  },
+  inputMedium: {
+    height: 64,
+    paddingHorizontal: 20,
+  },
+  inputLarge: {
+    height: 72,
+    paddingHorizontal: 24,
+  },
+  // Text size variants
+  textSmall: {
+    fontSize: 14,
+  },
+  textMedium: {
+    fontSize: 17,
+  },
+  textLarge: {
+    fontSize: 18,
+  },
+  textDisabled: {
+    color: '#9ca3af',
+  },
+  textEnabled: {
+    color: '#111827',
   },
   // Modal styles
   modalOverlay: {

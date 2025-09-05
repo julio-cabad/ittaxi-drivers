@@ -64,7 +64,6 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         autoCapitalize="words"
         leftIcon={<Icon name="person" size={20} color={itPrimary} />}
         size="medium"
-        height={50}
         showSuccessIndicator={true}
       />
 
@@ -97,7 +96,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         maxDate={getMaxBirthDate()}
         minDate={getMinBirthDate()}
         leftIcon={<Icon name="calendar-today" size={20} color={itPrimary} />}
-        size="medium"
+        size="small"
         showSuccessIndicator={true}
         containerStyle={tw`mt-2`}
       />
@@ -107,7 +106,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         fontSize={18}
         fontWeight="600"
         color={itDarkGray}
-        style={tw`mb-4 mt-6`}
+        style={tw`mb-4 mt-4`}
       >
         📍 Dirección
       </AppText>
@@ -137,7 +136,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         fontSize={18}
         fontWeight="600"
         color={itDarkGray}
-        style={tw`mb-4 mt-6`}
+        style={tw`mb-4 mt-4`}
       >
         🚨 Contacto de emergencia
       </AppText>
