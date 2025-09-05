@@ -27,6 +27,7 @@ import { useDocumentsPersistence } from '../../hooks/useDocumentsPersistence';
 import { loginStyles, complexLoginStyles } from '../auth/Login/Login.styles';
 import { authStyles } from '../../styles';
 import { itDarkGray } from '../../utils';
+import { strings } from '../../constants';
 
 const DocumentsUploadScreen = () => {
   const navigation = useNavigation<AuthNavigationProp>();
@@ -61,15 +62,13 @@ const DocumentsUploadScreen = () => {
   useEffect(() => {
     const loadExistingData = async () => {
       try {
-        
+
 
         if (existingDocuments) {
           const extractedUrls = extractDocumentUrls(existingDocuments);
           setUploadedDocuments(extractedUrls);
 
-          logger.debug('DocumentsUploadScreen: Existing documents loaded', {
-            documentsCount: Object.values(extractedUrls).filter(Boolean).length,
-          });
+
         }
       } catch (error) {
         logger.error(
@@ -87,26 +86,9 @@ const DocumentsUploadScreen = () => {
    */
   const cleanupTemporaryFiles = useCallback(async () => {
     try {
-      logger.debug('DocumentsUploadScreen: Cleaning up temporary files', {
-        count: temporaryFiles.size,
-      });
-
-      // Clean up temporary files from device cache
-      for (const fileUri of temporaryFiles) {
-        try {
-          // React Native doesn't have built-in file deletion
-          // but we clear the reference to allow garbage collection
-          logger.debug('Removing temporary file reference', { fileUri });
-        } catch (err) {
-          logger.warn('Failed to remove temporary file', {
-            fileUri,
-            error: err,
-          });
-        }
-      }
 
       setTemporaryFiles(new Set());
-      logger.debug('DocumentsUploadScreen: Temporary files cleaned up');
+
     } catch (error) {
       logger.error(
         'DocumentsUploadScreen: Failed to cleanup temporary files',
@@ -170,8 +152,8 @@ const DocumentsUploadScreen = () => {
         return newSet;
       });
       showSuccessToast(
-        'Documento subido',
-        'El documento se subió correctamente',
+        strings.onboarding.documentsUpload.success.documentUploaded,
+        strings.onboarding.documentsUpload.success.documentUploadedMessage,
       );
     },
     [],
@@ -189,7 +171,7 @@ const DocumentsUploadScreen = () => {
           return newSet;
         });
       }
-      showErrorToast('Error al subir documento', error);
+      showErrorToast(strings.onboarding.documentsUpload.error.uploadDocument, error);
     },
     [],
   );
@@ -217,11 +199,6 @@ const DocumentsUploadScreen = () => {
           return await operation();
         } catch (error) {
           lastError = error;
-          logger.warn(
-            `DocumentsUploadScreen: Attempt ${attempt}/${maxRetries} failed`,
-            error,
-          );
-
           if (attempt < maxRetries) {
             await new Promise<void>(resolve =>
               setTimeout(() => resolve(), delay * attempt),
@@ -242,8 +219,8 @@ const DocumentsUploadScreen = () => {
     // Validate all documents are uploaded
     if (!areAllDocumentsUploaded()) {
       showErrorToast(
-        'Documentos faltantes',
-        'Por favor sube todos los documentos requeridos',
+        strings.onboarding.documentsUpload.error.missingDocuments,
+        strings.onboarding.documentsUpload.error.missingDocumentsMessage,
       );
       return;
     }
@@ -251,8 +228,8 @@ const DocumentsUploadScreen = () => {
     // Validate no uploads are in progress
     if (uploadingDocuments.size > 0) {
       showErrorToast(
-        'Uploads en progreso',
-        'Espera a que terminen de subir todos los documentos',
+        strings.onboarding.documentsUpload.error.uploadsInProgress,
+        strings.onboarding.documentsUpload.error.uploadsInProgressMessage,
       );
       return;
     }
@@ -260,8 +237,8 @@ const DocumentsUploadScreen = () => {
     // Validate user is authenticated
     if (!userId) {
       showErrorToast(
-        'Error de autenticación',
-        'Debes iniciar sesión para continuar',
+        strings.onboarding.documentsUpload.error.authenticationError,
+        strings.onboarding.documentsUpload.error.authenticationErrorMessage,
       );
       return;
     }
@@ -321,11 +298,6 @@ const DocumentsUploadScreen = () => {
           : null,
       };
 
-      logger.info('DocumentsUploadScreen: Saving documents data', {
-        documentsCount: Object.values(documentsPayload).filter(Boolean).length,
-        userId: userId || 'anonymous',
-      });
-
       // Use retry logic for saving data
       const result = await retryOperation(
         () => saveStepDataAndAdvance(3, documentsPayload, 4),
@@ -334,11 +306,10 @@ const DocumentsUploadScreen = () => {
       );
 
       if (result.success) {
-        logger.info('DocumentsUploadScreen: Documents saved successfully');
 
         showSuccessToast(
-          'Documentos guardados',
-          'Tus documentos han sido guardados correctamente',
+          strings.onboarding.documentsUpload.success.documentsSaved,
+          strings.onboarding.documentsUpload.success.documentsSavedMessage,
         );
 
         // Cleanup temporary files
@@ -349,19 +320,17 @@ const DocumentsUploadScreen = () => {
           navigation.navigate(SCREEN_NAMES.ONBOARDING.VEHICLE_PHOTOS);
         }, 500);
       } else {
-        logger.error(
-          'DocumentsUploadScreen: Failed to save documents',
-          result.error,
-        );
 
         showErrorToast(
-          'Error al guardar',
-          result.error || 'No se pudieron guardar los documentos',
+          strings.onboarding.documentsUpload.error.saveError,
+          result.error || strings.onboarding.documentsUpload.error.saveErrorMessage,
         );
       }
     } catch (error: any) {
-      console.log('error');
-      showErrorToast('Error al guardar', error.message || 'Error desconocido');
+      showErrorToast(
+        strings.onboarding.documentsUpload.error.saveError,
+        error.message || strings.onboarding.documentsUpload.error.unknownError,
+      );
     } finally {
       setIsSubmitting(false);
     }

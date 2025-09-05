@@ -155,4 +155,27 @@ export const strings = {
     done: 'Hecho',
     retry: 'Reintentar',
   },
+
+  onboarding: {
+    documentsUpload: {
+      success: {
+        documentUploaded: 'Documento subido',
+        documentUploadedMessage: 'El documento se subió correctamente',
+        documentsSaved: 'Documentos guardados',
+        documentsSavedMessage: 'Tus documentos han sido guardados correctamente',
+      },
+      error: {
+        uploadDocument: 'Error al subir documento',
+        missingDocuments: 'Documentos faltantes',
+        missingDocumentsMessage: 'Por favor sube todos los documentos requeridos',
+        uploadsInProgress: 'Uploads en progreso',
+        uploadsInProgressMessage: 'Espera a que terminen de subir todos los documentos',
+        authenticationError: 'Error de autenticación',
+        authenticationErrorMessage: 'Debes iniciar sesión para continuar',
+        saveError: 'Error al guardar',
+        saveErrorMessage: 'No se pudieron guardar los documentos',
+        unknownError: 'Error desconocido',
+      },
+    },
+  },
 };
