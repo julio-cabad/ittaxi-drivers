@@ -1,33 +1,63 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Button, DatePicker } from '../../commons';
-import { FormField } from '../../commons/FormField';
-import { itPrimary } from '../../../utils/colors';
+import { Button, DatePicker, AppText, FormField } from '../../commons';
+import { itPrimary, itDarkGray } from '../../../utils/colors';
 import { getMaxBirthDate, getMinBirthDate } from '../../../utils/dateHelpers';
-import {
-  PersonalDataFormContentProps,
-} from '../../../types/onboarding';
+import { PersonalDataFormContentProps } from '../../../types/onboarding';
+import { authStyles } from '../../../styles/components/auth';
 import tw from 'twrnc';
-
-
 
 const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
   formik,
+  onSubmit,
+  loading = false,
 }) => {
+  const handleSubmit = async () => {
+    Keyboard.dismiss();
 
+    // Marcar todos los campos como tocados para mostrar errores
+    formik.setTouched({
+      firstName: true,
+      lastName: true,
+      phoneNumber: true,
+      birthDate: true,
+      city: true,
+      address: true,
+      'emergencyContact.name': true,
+      'emergencyContact.phoneNumber': true,
+      'emergencyContact.relationship': true,
+    });
 
-  const handleSubmit = () => {
-    console.log('🔴 PersonalDataFormContent: Botón presionado');
-    console.log('🔴 PersonalDataFormContent: formik.values:', formik.values);
-    console.log('🔴 PersonalDataFormContent: formik.errors:', formik.errors);
-    console.log('🔴 PersonalDataFormContent: formik.isValid:', formik.isValid);
-    formik.handleSubmit();
+    const errors = await formik.validateForm();
+
+    if (Object.keys(errors).length > 0) {
+      console.log('❌ Validation errors:', errors);
+      return;
+    }
+
+    if (formik.isValid && !formik.isSubmitting) {
+      if (onSubmit) {
+        await onSubmit(formik.values);
+      } else {
+        // Fallback to formik.handleSubmit if no onSubmit provided
+        formik.handleSubmit();
+      }
+    }
   };
 
   return (
     <View style={tw`w-full`}>
-      {/* Información Personal */}
+      {/* Sección: Datos Personales */}
+      <AppText
+        fontSize={18}
+        fontWeight="600"
+        color={itDarkGray}
+        style={tw`mb-4 mt-2`}
+      >
+        📋 Información personal
+      </AppText>
+
       <FormField
         name="firstName"
         label="Nombre"
@@ -51,7 +81,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
 
       <FormField
         name="phoneNumber"
-        label="Teléfono"
+        label="Celular"
         keyboardType="phone-pad"
         leftIcon={<Icon name="phone" size={20} color={itPrimary} />}
         size="medium"
@@ -61,15 +91,27 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
       />
 
       <DatePicker
+        name="birthDate"
         label="Fecha de Nacimiento"
-        value={formik.values.birthDate}
-        onDateSelect={(date) => formik.setFieldValue('birthDate', date)}
-        placeholder="Selecciona tu fecha de nacimiento"
-        error={formik.touched.birthDate && formik.errors.birthDate ? formik.errors.birthDate : undefined}
         required
         maxDate={getMaxBirthDate()}
         minDate={getMinBirthDate()}
+        leftIcon={<Icon name="calendar-today" size={20} color={itPrimary} />}
+        size="medium"
+        showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
+
+      {/* Sección: Dirección */}
+      <AppText
+        fontSize={18}
+        fontWeight="600"
+        color={itDarkGray}
+        style={tw`mb-4 mt-6`}
+      >
+        📍 Dirección
+      </AppText>
+
       <FormField
         name="city"
         label="Ciudad"
@@ -78,18 +120,27 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
-        containerStyle={tw`mt-2`}
       />
 
       <FormField
         name="address"
-        label="Dirección"
+        label="Dirección Completa"
         leftIcon={<Icon name="location-on" size={20} color={itPrimary} />}
         size="medium"
         height={50}
         showSuccessIndicator={true}
         containerStyle={tw`mt-2`}
       />
+
+      {/* Sección: Contacto de Emergencia */}
+      <AppText
+        fontSize={18}
+        fontWeight="600"
+        color={itDarkGray}
+        style={tw`mb-4 mt-6`}
+      >
+        🚨 Contacto de emergencia
+      </AppText>
 
       <FormField
         name="emergencyContact.name"
@@ -99,11 +150,11 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
-        containerStyle={tw`mt-2`}
       />
 
       <FormField
         name="emergencyContact.phoneNumber"
+        label="Celular"
         keyboardType="phone-pad"
         leftIcon={<Icon name="phone" size={20} color={itPrimary} />}
         size="medium"
@@ -122,21 +173,21 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         showSuccessIndicator={true}
         containerStyle={tw`mt-2`}
       />
+
       {/* Submit Button */}
       <Button
         variant="primary"
         size="medium"
-        loading={formik.isSubmitting}
-        disabled={formik.isSubmitting}
+        loading={loading}
+        disabled={!formik.isValid || formik.isSubmitting || loading}
         onPress={handleSubmit}
-        style={tw`mt-8`}
+        style={authStyles.registerButton}
+        testID="personal-data-submit-button"
       >
-        {formik.isSubmitting ? 'Guardando' : 'Continuar'}
+        {loading ? 'Guardando...' : 'Continuar'}
       </Button>
     </View>
   );
 };
 
 export default PersonalDataFormContent;
-
-

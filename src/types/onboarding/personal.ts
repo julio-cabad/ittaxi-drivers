@@ -43,4 +43,6 @@ export interface PersonalDataFormContentProps {
     validateForm: () => Promise<any>;
     handleSubmit: () => void;
   };
+  onSubmit?: (values: PersonalDataFormValues) => Promise<void>;
+  loading?: boolean;
 }

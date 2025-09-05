@@ -11,14 +11,18 @@ interface VehicleDataFormContentProps {
   formik: FormikProps<VehicleData>;
 }
 
-const VehicleDataFormContent: React.FC<VehicleDataFormContentProps> = ({ formik }) => {
+const VehicleDataFormContent: React.FC<VehicleDataFormContentProps> = ({
+  formik,
+}) => {
   const handleSubmit = () => {
     formik.handleSubmit();
   };
 
   return (
     <View style={tw`w-full`}>
-      <Text style={tw`text-lg font-semibold text-gray-800 mb-4`}>Información del Vehículo</Text>
+      <Text style={tw`text-lg font-semibold text-gray-800 mb-4`}>
+        Información del Vehículo
+      </Text>
 
       <Input
         name="make"
