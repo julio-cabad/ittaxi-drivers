@@ -26,4 +26,5 @@ export interface FormFieldProps {
   onFocus?: () => void;
   onBlur?: () => void;
   maxLength?: number;
+  blurOnSubmit?: boolean;
 }

@@ -34,6 +34,7 @@ const FormField: React.FC<FormFieldProps> = ({
   onFocus,
   onBlur,
   maxLength,
+  blurOnSubmit = true,
 }) => {
   const [field, meta, helpers] = useField(name);
   const [isFocused, setIsFocused] = useState(false);
@@ -165,6 +166,7 @@ const FormField: React.FC<FormFieldProps> = ({
                 autoComplete={autoComplete}
                 testID={testID}
                 maxLength={maxLength}
+                blurOnSubmit={blurOnSubmit}
             />
         </View>
         {isValid && showSuccessIndicator && (

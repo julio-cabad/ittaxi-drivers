@@ -14,8 +14,6 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
   loading = false,
 }) => {
   const handleSubmit = async () => {
-    Keyboard.dismiss();
-
     // Marcar todos los campos como tocados para mostrar errores
     formik.setTouched({
       firstName: true,
@@ -32,11 +30,11 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
     const errors = await formik.validateForm();
 
     if (Object.keys(errors).length > 0) {
-      console.log('❌ Validation errors:', errors);
       return;
     }
 
     if (formik.isValid && !formik.isSubmitting) {
+      Keyboard.dismiss(); // Solo cerrar teclado cuando se envía exitosamente
       if (onSubmit) {
         await onSubmit(formik.values);
       } else {
@@ -64,6 +62,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         autoCapitalize="words"
         leftIcon={<Icon name="person" size={20} color={itPrimary} />}
         size="medium"
+        height={50}
         showSuccessIndicator={true}
       />
 
@@ -119,6 +118,8 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
+        blurOnSubmit={false}
+        containerStyle={tw`mt-2`}
       />
 
       <FormField
@@ -128,6 +129,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
+        blurOnSubmit={false}
         containerStyle={tw`mt-2`}
       />
 
@@ -149,6 +151,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
+        containerStyle={tw`mt-2`}
       />
 
       <FormField
@@ -170,6 +173,7 @@ const PersonalDataFormContent: React.FC<PersonalDataFormContentProps> = ({
         size="medium"
         height={50}
         showSuccessIndicator={true}
+        blurOnSubmit={false}
         containerStyle={tw`mt-2`}
       />
 
