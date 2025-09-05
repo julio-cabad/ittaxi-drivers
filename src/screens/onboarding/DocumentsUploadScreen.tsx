@@ -13,7 +13,7 @@ import { OnboardingHeader } from '../../components/onboarding/OnboardingHeader';
 import { useOnboarding } from '../../hooks/useOnboarding';
 import { firebaseStorageService } from '../../config/firebaseStorage';
 import { DocumentType } from '../../utils/imageValidation';
-import { onboardingStyles } from '../../styles/onboardingStyles';
+import { onboardingStyles } from '../../styles/components/onboarding';
 import { showSuccessToast, showErrorToast } from '../../utils/toastUtils';
 import { RootState } from '../../store';
 import {

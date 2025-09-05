@@ -13,7 +13,7 @@ import { VehicleData } from '../../types/onboarding';
 import { RootState } from '../../store';
 import { AuthNavigationProp } from '../../navigation/AuthNavigator';
 import { SCREEN_NAMES } from '../../constants';
-import { onboardingStyles } from '../../styles/onboardingStyles';
+import { onboardingStyles } from '../../styles/components/onboarding';
 import { showSuccessToast } from '../../utils/toastUtils';
 
 const VehicleDataScreen = () => {

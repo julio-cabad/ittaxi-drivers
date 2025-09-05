@@ -1,3 +1,5 @@
-export * from './commonStyles';
-export * from './onboardingStyles';
-export * from './componentStyles';
+// New centralized design system (primary)
+export * from './designSystem';
+
+// Component-specific styles (organized by feature)
+export * from './components';

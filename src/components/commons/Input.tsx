@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useField } from 'formik';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { inputStyles } from '../../styles';
+import { inputStyles } from '../../styles/components/inputs';
 
 // Import FocusEvent and BlurEvent directly
 import { FocusEvent, BlurEvent } from 'react-native';

@@ -1,1 +1,1 @@
-export { default as PersonalDataFormContent } from './PersonalDataForm';
+export { default as RegisterFormContent } from './RegisterForm';

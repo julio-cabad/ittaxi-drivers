@@ -3,33 +3,30 @@ import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Button } from '../../commons';
 import { FormField } from '../../commons/FormField';
-import { LoginFormContentProps } from '../../../types/auth';
-import { strings } from '../../../constants/strings';
+import { RegisterFormContentProps } from '../../../types/auth';
+import { strings } from '../../../constants';
 import tw from 'twrnc';
 import { itPrimary } from '../../../utils';
 import { authStyles } from '../../../styles/components/auth';
 
-const LoginFormContent: React.FC<LoginFormContentProps> = ({
+const RegisterFormContent: React.FC<RegisterFormContentProps> = ({
   formik,
   onSubmit,
   loading = false,
 }) => {
   const handleSubmit = async () => {
-    // Marcar todos los campos como touched para mostrar errores
     formik.setTouched({
       email: true,
       password: true,
+      confirmPassword: true,
     });
 
-    // Validar el formulario
     const errors = await formik.validateForm();
 
-    // Si hay errores, no continuar
     if (Object.keys(errors).length > 0) {
       return;
     }
 
-    // Si todo está válido, proceder con el submit
     if (formik.isValid && !formik.isSubmitting) {
       await onSubmit(formik.values);
     }
@@ -37,51 +34,62 @@ const LoginFormContent: React.FC<LoginFormContentProps> = ({
 
   return (
     <View style={tw`w-full`}>
-      {/* Email Input */}
       <FormField
         name="email"
-        label={strings.auth.login.emailLabel}
+        label={strings.auth.createAccount.emailLabel}
         size="medium"
-        height={50} // Altura personalizada - puedes cambiar este valor
+        height={50}
         keyboardType="email-address"
         autoCapitalize="none"
         autoComplete="email"
         leftIcon={<Icon name="email" size={20} color={itPrimary} />}
         showSuccessIndicator={true}
-        testID="login-email-input"
+        testID="register-email-input"
       />
 
-      {/* Password Input */}
       <FormField
         name="password"
-        label={strings.auth.login.passwordLabel}
+        label={strings.auth.createAccount.passwordLabel}
         size="medium"
-        height={50} // Altura personalizada - puedes cambiar este valor
+        height={50}
         secureTextEntry={true}
         autoCapitalize="none"
         autoComplete="password"
         leftIcon={<Icon name="lock" size={20} color={itPrimary} />}
         showSuccessIndicator={true}
-        testID="login-password-input"
+        testID="register-password-input"
         containerStyle={tw`mt-2`}
       />
 
-      {/* Submit Button - MODERNIZED */}
+      <FormField
+        name="confirmPassword"
+        label={strings.auth.createAccount.confirmPasswordLabel}
+        size="medium"
+        height={50}
+        secureTextEntry={true}
+        autoCapitalize="none"
+        autoComplete="password"
+        leftIcon={<Icon name="lock-outline" size={20} color={itPrimary} />}
+        showSuccessIndicator={true}
+        testID="register-confirm-password-input"
+        containerStyle={tw`mt-2`}
+      />
+
       <Button
         variant="primary"
         size="medium"
         loading={loading}
         disabled={!formik.isValid || formik.isSubmitting || loading}
         onPress={handleSubmit}
-        style={authStyles.loginButton}
-        testID="login-submit-button"
+        style={authStyles.registerButton}
+        testID="register-submit-button"
       >
         {loading
-          ? strings.auth.login.submitButtonLoading
-          : strings.auth.login.submitButton}
+          ? strings.auth.createAccount.submitButtonLoading
+          : strings.auth.createAccount.submitButton}
       </Button>
     </View>
   );
 };
 
-export default LoginFormContent;
+export default RegisterFormContent;

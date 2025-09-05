@@ -5,7 +5,7 @@ import { AuthNavigationProp } from '../../navigation/AuthNavigator';
 import { SCREEN_NAMES } from '../../constants/navigation';
 import { ScreenWrapper } from '../../components/layout';
 import { Button } from '../../components/commons';
-import { commonStyles } from '../../styles';
+import { commonStyles } from '../../styles/components/common';
 import { useOnboarding } from '../../hooks/useOnboarding';
 import tw from 'twrnc';
 

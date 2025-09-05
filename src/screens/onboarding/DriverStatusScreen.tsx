@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '../../navigation/AuthNavigator';
 import { ScreenWrapper } from '../../components/layout';
 import { Button } from '../../components/commons';
-import { commonStyles } from '../../styles';
+import { commonStyles } from '../../styles/components/common';
 import { useOnboarding } from '../../hooks/useOnboarding';
 import tw from 'twrnc';
 

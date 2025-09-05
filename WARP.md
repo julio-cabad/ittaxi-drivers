@@ -111,6 +111,8 @@ src/
 - Sync status tracking for offline-first functionality
 
 **Component Architecture:**
+- **Centralized Design System** in `styles/designSystem/` with buttons, forms, and theme variants
+- **Component-Specific Styles** in `styles/components/` for auth, onboarding sections  
 - Modern design system in `components/modern/`
 - Form components with Formik integration
 - Reusable layout components
@@ -136,6 +138,17 @@ src/
 - `src/store/index.ts` - Redux store configuration
 - `src/store/slices/` - Feature-specific state slices
 - Integrates RTK Query with regular Redux slices
+
+### Design System
+- `src/styles/designSystem/` - Centralized styling system
+- `src/styles/designSystem/buttons.ts` - Button variants, sizes, and states
+- `src/styles/designSystem/forms.ts` - Form variants, input states, and layouts
+- `src/styles/components/` - Feature-specific component styles
+- `src/styles/components/auth.ts` - Authentication component styles
+- `src/styles/components/onboarding.ts` - Onboarding component styles
+- `src/styles/components/common.ts` - Shared component styles
+- `src/styles/components/inputs.ts` - Input component styles (legacy)
+- `src/constants/modernDesignSystem.ts` - Design tokens (colors, spacing, typography)
 
 ## Development Guidelines
 
@@ -173,3 +186,11 @@ src/
 - Use Formik + Yup for all forms
 - Implement proper validation schemas
 - Handle offline form submission with local storage
+
+### Design System Usage
+- Import styles from `styles/designSystem` or `styles/components`
+- Use predefined button variants: `primary`, `secondary`, `purple`, `outline`, `ghost`, `danger`, `success`
+- Use predefined form variants: `auth`, `onboarding`, `modern`, `default`
+- Leverage design tokens from `constants/modernDesignSystem.ts`
+- Avoid creating inline styles - use the centralized system
+- For custom styles, extend existing variants using `getButtonStyle()` or `getFormInputStyle()` functions

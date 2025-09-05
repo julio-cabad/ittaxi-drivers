@@ -12,7 +12,7 @@ import { personalDataValidationSchema, personalDataInitialValues } from '../../u
 import { useOnboarding } from '../../hooks/useOnboarding';
 import { showSuccessToast } from '../../utils/toastUtils';
 import { logger } from '../../utils/logger';
-import { onboardingStyles } from '../../styles/onboardingStyles';
+import { onboardingStyles } from '../../styles/components/onboarding';
 import { SCREEN_NAMES } from '../../constants';
 
 const PersonalDataScreen = () => {

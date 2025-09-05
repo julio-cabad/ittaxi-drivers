@@ -10,4 +10,5 @@ export interface LoginFormContentProps {
 export interface RegisterFormContentProps {
   formik: FormikProps<RegisterFormData>;
   onSubmit: (values: RegisterFormData) => Promise<void>;
+  loading?: boolean;
 }
